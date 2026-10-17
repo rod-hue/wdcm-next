@@ -10,7 +10,7 @@
   /* ---------- 3D tilt + glare on every card (site-wide) ---------- */
   if(fine){document.addEventListener('mousemove',function(e){var c=e.target.closest('.card .ph,.dbox,.statbox,.un,.bt');if(!c)return;var r=c.getBoundingClientRect(),x=(e.clientX-r.left)/r.width,y=(e.clientY-r.top)/r.height;
       c.style.setProperty('--gx',(x*100).toFixed(1)+'%');c.style.setProperty('--gy',(y*100).toFixed(1)+'%');
-      if(c.classList.contains('ph'))c.style.transform='perspective(900px) rotateX('+((.5-y)*8).toFixed(2)+'deg) rotateY('+((x-.5)*10).toFixed(2)+'deg) translateZ(0)'});
+      });
     document.addEventListener('mouseout',function(e){var c=e.target.closest('.card .ph');if(c&&!c.contains(e.relatedTarget))c.style.transform=''})}
 
   /* ---------- reveal any new boxes as they enter ---------- */
@@ -24,30 +24,32 @@
 
   /* =================== HOMEPAGE =================== */
   if(document.body.classList.contains('home')){
-    /* newsroom by the numbers */
-    var anchor=document.querySelector('.band');
-    if(anchor){var sec=document.createElement('section');sec.className='newsroom-stats';
-      sec.innerHTML='<div class="ns-in"><span class="mono gold-txt">The newsroom, live</span><h2 class="ns-title">Every corner of the District, <em>covered.</em></h2><div class="ns-grid">'+
-        ['Stories published','In the last 24 hours','Topics covered','Voices on staff'].map(function(l,i){return '<div class="statbox"><b data-n="0" id="ns'+i+'">0</b><span>'+l+'</span><i class="bar"></i></div>'}).join('')+'</div></div>';
-      anchor.parentNode.insertBefore(sec,anchor);
-      Promise.all([api('posts/',{limit:1,fields:'id'}),api('posts/',{limit:100,fields:'published_at',filter:"published_at:>'"+new Date(Date.now()-864e5).toISOString()+"'"}),api('tags/',{limit:1,fields:'id'}),api('authors/',{limit:'all',include:'count.posts'})]).then(function(r){
-        var vals=[r[0].meta.pagination.total,(r[1].posts||[]).length,r[2].meta.pagination.total,(r[3].authors||[]).filter(function(a){return a.count&&a.count.posts>0}).length];
-        vals.forEach(function(v,i){var el=document.getElementById('ns'+i),o={v:0};ScrollTrigger.create({trigger:el,start:'top 90%',once:true,onEnter:function(){G.to(o,{v:v,duration:2.2,ease:'power3.out',onUpdate:function(){el.textContent=Math.round(o.v).toLocaleString()}});G.fromTo(el.parentNode.querySelector('.bar'),{scaleX:0},{scaleX:1,duration:2.2,ease:'power3.out'})}})})});
-      boxIn('.statbox',sec)}
+    /* channels: film plays when on screen; 3D print stack straightens and fans out with scroll; giant title glides */
+    document.addEventListener('wdcm:room',function(e){var s=e.detail,v=s.querySelector('.ch-bg video');
+      if(v){var pick=function(){var px=innerWidth*Math.min(2,devicePixelRatio||1);v.src=v.dataset.q+(px>=1000?'-hd':'-sd')+'.mp4'};
+        new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){if(!v.src)pick();v.play().catch(function(){})}else v.pause()})},{rootMargin:'200px'}).observe(v)}
+      G.fromTo(s.querySelector('.ch-bg'),{yPercent:-8},{yPercent:8,ease:'none',scrollTrigger:{trigger:s,start:'top bottom',end:'bottom top',scrub:true}});
+      G.fromTo(s.querySelector('.ch-giant'),{xPercent:10},{xPercent:-40,ease:'none',scrollTrigger:{trigger:s,start:'top bottom',end:'bottom top',scrub:true}});
+      var lead=s.querySelector('.ch-lead'),mob=innerWidth<980;
+      if(lead){G.fromTo(lead,{rotateY:mob?-10:-24,rotateX:mob?8:12,z:-120},{rotateY:mob?-3:-6,rotateX:2,z:0,ease:'none',scrollTrigger:{trigger:s,start:'top 90%',end:'center 45%',scrub:1}});
+        [['.pg1',22],['.pg2',44],['.pg3',66]].forEach(function(a){var el=lead.querySelector(a[0]);if(el)G.fromTo(el,{x:0,y:0,z:-10},{x:a[1],y:a[1],z:-a[1]*2,ease:'none',scrollTrigger:{trigger:s,start:'top 90%',end:'center 45%',scrub:1}})})}
+      G.from(s.querySelectorAll('.ch-head > *'),{y:40,opacity:0,duration:1,ease:'expo.out',stagger:.08,scrollTrigger:{trigger:s,start:'top 75%',once:true}});
+      G.from(s.querySelectorAll('.ch-item'),{x:80,opacity:0,duration:1,ease:'expo.out',stagger:.1,scrollTrigger:{trigger:s.querySelector('.ch-list'),start:'top 85%',once:true}});
+      ScrollTrigger.refresh()});
     /* section marquees between rooms */
     var ins=0,mo=new MutationObserver(function(){var rooms=document.querySelectorAll('.room');if(rooms.length>=4&&!ins){ins=1;
       rooms[1].parentNode.insertBefore(marquee(['Politics','National','Sports','Business','Culture','Food & Drink','DC Answers'],''),rooms[1]);
       rooms[3].parentNode.insertBefore(marquee(['Washington DC Magazine','The capital, live','Every story, every hour'],'rev gold'),rooms[3]);mo.disconnect()}});
     mo.observe(document.body,{childList:true,subtree:true});
-    setInterval(function(){boxIn('.card');boxIn('.bt')},1200);
+    setInterval(function(){boxIn('.bt')},1200);
     /* THE DOME: the sculpture turns with your scroll; words pass behind it */
     (function(){var cv=document.getElementById('domeCv');if(!cv)return;var N=120,mob=innerWidth<760,dir='assets/seq/'+(mob?'dome-m':'dome')+'/',x=cv.getContext('2d'),imgs=[],cur=0;
       cv.width=mob?640:1080;cv.height=cv.width;
       function draw(i){for(var k=0;k<N;k++){var im=imgs[i-k]&&imgs[i-k].ok?imgs[i-k]:imgs[i+k]&&imgs[i+k].ok?imgs[i+k]:null;if(im){x.clearRect(0,0,cv.width,cv.height);x.drawImage(im,(cv.width-im.naturalWidth*cv.height/im.naturalHeight)/2,0,im.naturalWidth*cv.height/im.naturalHeight,cv.height);return}}}
       var started=false;function load(){if(started)return;started=true;var order=[];[8,4,2,1].forEach(function(s){for(var i=0;i<N;i+=s)if(order.indexOf(i)<0)order.push(i)});
         order.forEach(function(i){var im=new Image();im.onload=function(){im.ok=1;if(Math.abs(i-cur)<4)draw(cur)};im.src=dir+String(i+1).padStart(3,'0')+'.webp';imgs[i]=im})}
-      var words=[].slice.call(document.querySelectorAll('.dome-words span')),lines=[].slice.call(document.querySelectorAll('.dome-line'));
-      ScrollTrigger.create({trigger:'#dome',start:'top bottom',onEnter:load});
+      var words=[].slice.call(document.querySelectorAll('.dome-words span')),lines=[].slice.call(document.querySelectorAll('.dome-line'));if(lines[0])lines[0].classList.add('on');
+      load();
       ScrollTrigger.create({trigger:'#dome',start:'top top',end:'bottom bottom',onUpdate:function(st){var p=st.progress,f=Math.min(N-1,Math.round(p*(N-1)));if(f!==cur){cur=f;draw(f)}
         var seg=Math.min(2,Math.floor(p*3));words.forEach(function(w,i){var local=p*3-i;w.style.opacity=i===seg?Math.max(0,Math.min(1,local<.5?local*2.2:(1-local)*2.2)):0;w.style.transform='translateX('+((.5-local)*30)+'vw) scale('+(1+local*.15)+')'});
         lines.forEach(function(l,i){l.classList.toggle('on',i<=seg)})}});

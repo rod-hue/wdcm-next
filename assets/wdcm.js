@@ -4,14 +4,14 @@
   var LIVE='https://www.washingtondcmagazine.com';
   var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
   var ROOMS=[
-    {t:'Politics & Power',k:'The Council, the Mayor and the vote',f:'tag:[dc-politics,d-c-council,mayor-and-agencies,elections-and-accountability]',slug:'politics'},
-    {t:'National',k:'The capital and the country',f:'tag:national-news',slug:'national-news'},
-    {t:'Sports',k:'Commanders, Wizards, Caps, Nats, Mystics, D.C. United',f:'tag:[dc-sports,sports,national-sports]',slug:'dc-sports'},
-    {t:'Business',k:'Money, power moves and the DMV economy',f:'tag:business',slug:'business'},
-    {t:'Culture',k:'Music, film, fashion and the moment',f:'tag:[pop-culture,culture,music,arts-culture]',slug:'culture'},
-    {t:'Food & Drink',k:'Where DC eats now',f:'tag:food-drink',slug:'food-drink'}
+    {t:'National',k:'Washington\u2019s view of America',f:'tag:national-news',slug:'national-news',film:'national'},
+    {t:'Politics & Power',k:'The Council, the Mayor, Congress and the vote',f:'tag:[dc-politics,d-c-council,mayor-and-agencies,elections-and-accountability,politics]',slug:'politics',film:'capitol'},
+    {t:'Sports',k:'From the District to the national stage',f:'tag:[dc-sports,sports,national-sports]',slug:'dc-sports',film:'sports'},
+    {t:'Business',k:'Money, power and the American economy',f:'tag:business',slug:'business',film:'business'},
+    {t:'Culture',k:'Music, film and the national conversation',f:'tag:[pop-culture,culture,music,arts-culture]',slug:'culture',film:'culture'},
+    {t:'Food & Drink',k:'Where the capital eats now',f:'tag:food-drink',slug:'food-drink',film:'food'}
   ];
-  var NAV=[['Politics','politics'],['National','national-news'],['Sports','dc-sports'],['Business','business'],['Culture','culture'],['Food & Drink','food-drink'],['DC Answers','dc-answers']];
+  var NAV=[['National','national-news'],['Politics','politics'],['Sports','dc-sports'],['Business','business'],['Culture','culture'],['Food & Drink','food-drink'],['DC Answers','dc-answers']];
 
   function api(res,params){var u=new URL(API+res+'/');u.searchParams.set('key',KEY);for(var k in params)u.searchParams.set(k,params[k]);return fetch(u).then(function(r){return r.json()})}
   function img(u,w){if(!u)return '';if(u.indexOf('/content/images/')>-1&&u.indexOf('/size/')<0)return u.replace('/content/images/','/content/images/size/w'+w+'/');return u}
@@ -79,11 +79,17 @@
     document.getElementById('pulse').innerHTML=top.map(function(s){var r=c[s]/mx;return '<a href="'+LIVE+'/tag/'+s+'/" style="font-size:'+(18+r*58).toFixed(0)+'px;opacity:'+(.55+r*.45).toFixed(2)+'">'+esc(names[s])+'<sup>'+c[s]+'</sup></a>'}).join('');reveal();
   });
 
-  /* rooms */
+  /* rooms: cinematic channels */
   var rooms=document.getElementById('rooms');
-  ROOMS.forEach(function(r){var s=document.createElement('section');s.className='room';s.id='room-'+r.slug;
-    s.innerHTML='<div class="band-head"><div><h2 class="kicker"><span class="star"></span>'+r.t+'</h2><span class="mono muted">'+esc(r.k)+'</span></div><a class="mono more" href="'+LIVE+'/tag/'+r.slug+'/">All '+esc(r.t)+' &rarr;</a></div><div class="room-grid"></div>';rooms.appendChild(s);
-    api('posts',{limit:5,filter:r.f+'+feature_image:-null',fields:FIELDS,include:'tags'}).then(function(d){s.querySelector('.room-grid').innerHTML=(d.posts||[]).map(function(p,i){return card(p,i?400:1200)}).join('');reveal()});
+  ROOMS.forEach(function(r,ri){var s=document.createElement('section');s.className='room ch';s.id='room-'+r.slug;
+    s.innerHTML='<div class="ch-bg"><video muted loop playsinline preload="none" poster="assets/film/'+r.film+'.jpg" data-q="assets/film/'+r.film+'"></video></div>'+
+      '<div class="ch-giant" aria-hidden="true">'+esc(r.t.replace(' & ',' & '))+'</div>'+
+      '<div class="ch-in"><header class="ch-head"><span class="mono gold-txt">'+String(ri+1).padStart(2,'0')+' / Channel</span><h2>'+esc(r.t).replace('&amp;','<em>&amp;</em>')+'</h2><p>'+esc(r.k)+'</p><a class="ch-all mono" href="'+LIVE+'/tag/'+r.slug+'/">All '+esc(r.t)+' <span>&rarr;</span></a></header>'+
+      '<div class="ch-stage"><div class="ch-lead-wrap"></div><div class="ch-list"></div></div></div>';rooms.appendChild(s);
+    api('posts',{limit:5,filter:r.f+'+feature_image:-null+tag:-dc-answers',fields:FIELDS,include:'tags'}).then(function(d){var ps=d.posts||[];if(!ps.length)return;var p=ps[0];
+      s.querySelector('.ch-lead-wrap').innerHTML='<a class="ch-lead" href="'+link(p)+'"><i class="pg pg3"></i><i class="pg pg2"></i><i class="pg pg1"></i><div class="ch-card"><div class="ch-ph"><img src="'+img(p.feature_image,1400)+'" alt=""></div><div class="ch-tx"><span class="tagpill">'+esc(sec(p))+'</span><h3>'+esc(p.title)+'</h3><span class="ago">'+ago(p.published_at)+' &middot; '+(p.reading_time||1)+' min read</span></div></div></a>';
+      s.querySelector('.ch-list').innerHTML=ps.slice(1).map(function(q,i){return '<a class="ch-item" href="'+link(q)+'" style="--i:'+i+'"><div class="ci-ph"><img src="'+img(q.feature_image,500)+'" alt=""></div><div><span class="sec">'+esc(sec(q))+'</span><h4>'+esc(q.title)+'</h4><span class="ago">'+ago(q.published_at)+'</span></div></a>'}).join('');
+      document.dispatchEvent(new CustomEvent('wdcm:room',{detail:s}))});
   });
   var dca=document.getElementById('room-dc-answers');if(!dca){var a=document.querySelector('.answers');if(a)a.id='room-dc-answers'}
 

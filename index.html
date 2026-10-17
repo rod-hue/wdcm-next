@@ -10,10 +10,9 @@
 <link rel="icon" href="assets/icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..700&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/wdcm.css?v=e345b6bc">
-<link rel="stylesheet" href="assets/fx.css?v=e345b6bc">
-<link rel="stylesheet" href="assets/fx2.css?v=e345b6bc">
-<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
+<link rel="stylesheet" href="assets/wdcm.css?v=939a078e">
+<link rel="stylesheet" href="assets/fx.css?v=939a078e">
+<link rel="stylesheet" href="assets/fx2.css?v=939a078e">
 </head>
 <body class="home">
 <div class="loader" id="loader" aria-hidden="true">
@@ -44,15 +43,16 @@
 </header>
 
 <main>
-  <section class="cine" id="cine">
-    <div class="cine-pin">
-      <video class="cine-vid" id="cineVid" muted loop playsinline autoplay preload="auto" poster="assets/film/hero.jpg" data-q="assets/film/hero"></video>
-      <div class="knock"><span class="k1">Washington</span><span class="k2">D<span class="kdot">.</span>C.</span></div>
-      <div class="knock line" aria-hidden="true"><span class="k1">Washington</span><span class="k2">D.C.</span></div>
-      <div class="cine-ui">
-        <span class="mono gold-txt cine-kick">Washington DC Magazine &middot; Est. 2026</span>
-        <p class="cine-line">The capital, live. <em>Every story, every hour.</em></p>
-        <span class="mono cine-scroll">Scroll into the city &darr;</span>
+  <!-- THE DOME: 3D object driven by scroll -->
+  <section class="dome" id="dome">
+    <div class="dome-pin">
+      <div class="dome-words" aria-hidden="true"><span>Every vote.</span><span>Every voice.</span><span>Every story.</span></div>
+      <canvas class="dome-cv" id="domeCv" aria-label="A gold and marble Capitol dome turning"></canvas>
+      <div class="dome-copy">
+        <span class="mono gold-txt">Washington DC Magazine</span>
+        <p class="dome-line" data-i="0">America&rsquo;s magazine from the capital.</p>
+        <p class="dome-line" data-i="1">Power, culture and the people shaping the nation.</p>
+        <p class="dome-line" data-i="2">Every story, every hour, free to read.</p>
       </div>
     </div>
   </section>
@@ -65,6 +65,12 @@
       <div class="fr-nav"><button id="frPrev" aria-label="Previous story">&larr;</button><button id="frNext" aria-label="Next story">&rarr;</button></div>
     </div>
   </section>
+  <!-- THE SCOREBOARD -->
+  <section class="scores" id="scores" aria-label="DC sports scoreboard">
+    <div class="sc-head"><span class="mono gold-txt"><i class="live-dot"></i> The Scoreboard</span><h2>Washington&rsquo;s teams, <em>live.</em></h2></div>
+    <div class="sc-row" id="scRow"><div class="sc-card sk"></div><div class="sc-card sk"></div><div class="sc-card sk"></div><div class="sc-card sk"></div></div>
+  </section>
+
 
   <!-- LEAD + THE SIGNAL (live wire) -->
   <section class="lead-wrap" id="newsroom">
@@ -90,6 +96,14 @@
       <div class="pulse-cloud" id="pulse"></div>
     </div>
   </section>
+  <!-- THE DISTRICT DAILY -->
+  <section class="games" id="games">
+    <div class="gm-in">
+      <div class="gm-head"><span class="mono gold-txt">Play today</span><h2>The District <em>Daily.</em></h2><p>Ten free games, fresh every morning. Crosswords, trivia and puzzles with a capital twist.</p><a class="sub-btn gold big" href="https://www.washingtondcmagazine.com/games/">Play all ten &rarr;</a></div>
+      <div class="gm-grid" id="gmGrid"></div>
+    </div>
+  </section>
+
 
   <!-- SECTION ROOMS -->
   <div id="rooms"></div>
@@ -112,20 +126,6 @@
     </div>
   </section>
 
-  <!-- THE DOME: 3D object driven by scroll -->
-  <section class="dome" id="dome">
-    <div class="dome-pin">
-      <div class="dome-words" aria-hidden="true"><span>Every vote.</span><span>Every voice.</span><span>Every story.</span></div>
-      <canvas class="dome-cv" id="domeCv" aria-label="A gold and marble Capitol dome turning"></canvas>
-      <div class="dome-copy">
-        <span class="mono gold-txt">The capital, live</span>
-        <p class="dome-line" data-i="0">We cover the people who run this city.</p>
-        <p class="dome-line" data-i="1">And the people who make it worth living in.</p>
-        <p class="dome-line" data-i="2">Every story, every hour, free to read.</p>
-      </div>
-    </div>
-  </section>
-
   <!-- NEWSLETTER -->
   <section class="letter">
     <div class="letter-card">
@@ -135,6 +135,19 @@
       <a class="sub-btn big" href="https://www.washingtondcmagazine.com/#/portal/signup" target="_blank" rel="noopener">Get the newsletter</a>
     </div>
   </section>
+  <section class="cine" id="cine">
+    <div class="cine-pin">
+      <video class="cine-vid" id="cineVid" muted loop playsinline autoplay preload="auto" poster="assets/film/hero.jpg" data-q="assets/film/hero"></video>
+      <div class="knock"><span class="k1">Washington</span><span class="k2">D<span class="kdot">.</span>C.</span></div>
+      <div class="knock line" aria-hidden="true"><span class="k1">Washington</span><span class="k2">D.C.</span></div>
+      <div class="cine-ui">
+        <span class="mono gold-txt cine-kick">Washington DC Magazine &middot; Est. 2026</span>
+        <p class="cine-line">America&rsquo;s magazine from the capital. <em>Every story, every hour.</em></p>
+        <span class="mono cine-scroll">Keep scrolling, fly into the capital &darr;</span>
+      </div>
+    </div>
+  </section>
+
 </main>
 
 <footer class="foot">
@@ -159,9 +172,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
-<script src="assets/wdcm.js?v=e345b6bc"></script>
-<script src="assets/fx.js?v=e345b6bc"></script>
-<script src="assets/fx2.js?v=e345b6bc"></script>
-<script type="module" src="assets/fx3d.js?v=e345b6bc"></script>
+<script src="assets/wdcm.js?v=939a078e"></script>
+<script src="assets/fx.js?v=939a078e"></script>
+<script src="assets/live.js?v=939a078e"></script>
+<script src="assets/fx2.js?v=939a078e"></script>
 </body>
 </html>

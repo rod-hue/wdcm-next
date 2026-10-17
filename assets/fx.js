@@ -59,7 +59,10 @@
 
   /* masthead: dark glass over the films, cream elsewhere */
   var mast=document.getElementById('mast');
-  if(mast&&document.body.classList.contains('home')&&window.ScrollTrigger){mast.classList.add('dark');
+  if(mast&&document.body.classList.contains('home')){var DARK='.cine,.front,.room.ch,#dome,.pulse-band,.lead-wrap,.foot,.mq.gold';var tick=false;
+    var upd=function(){tick=false;var y=mast.getBoundingClientRect().bottom+4,el=document.elementFromPoint(innerWidth/2,y);mast.classList.toggle('dark',!!(el&&el.closest(DARK)))};
+    addEventListener('scroll',function(){if(!tick){tick=true;requestAnimationFrame(upd)}},{passive:true});setTimeout(upd,300)}
+  if(false){
     ScrollTrigger.create({trigger:'#front',start:'bottom 70px',onEnter:function(){mast.classList.remove('dark')},onLeaveBack:function(){mast.classList.add('dark')}});
     var dk=function(){var d=document.getElementById('dome');if(!d)return;ScrollTrigger.create({trigger:d,start:'top 70px',end:'bottom 70px',onToggle:function(s){mast.classList.toggle('dark',s.isActive)}})};dk()}
 
@@ -91,7 +94,7 @@
 
   /* liquid ripple on photo hover */
   var disp=document.querySelector('#liquid feDisplacementMap'),turb=document.querySelector('#liquid feTurbulence');
-  if(disp&&G&&fine&&!reduce){var lq={s:0};document.addEventListener('mouseover',function(e){var c=e.target.closest('.card');if(!c||c.__lq)return;c.__lq=1;setTimeout(function(){c.__lq=0},900);
+  if(false){var lq={s:0};document.addEventListener('mouseover',function(e){var c=e.target.closest('.card');if(!c||c.__lq)return;c.__lq=1;setTimeout(function(){c.__lq=0},900);
     turb.setAttribute('seed',Math.round(Math.random()*90));G.fromTo(lq,{s:0},{s:38,duration:.35,ease:'power2.out',yoyo:true,repeat:1,onUpdate:function(){disp.setAttribute('scale',lq.s.toFixed(1))}})})}
 
   /* card to article: the photo morphs into the article hero */
@@ -99,7 +102,7 @@
     document.querySelectorAll('[style*="view-transition-name"]').forEach(function(x){x.style.viewTransitionName=''});if(im)im.style.viewTransitionName='story'},true);
 
   /* film rooms + kinetic section heads (rooms load asynchronously) */
-  var FILMS={politics:{v:'assets/film/capitol',t:'Politics <em>&amp; Power</em>'}};
+  var FILMS={};
   function upgrade(){
     Object.keys(FILMS).forEach(function(k){var r=document.getElementById('room-'+k);if(!r||r.classList.contains('film'))return;var f=FILMS[k];r.classList.add('film');
       var head=document.createElement('div');head.className='room-film';head.innerHTML='<video muted loop playsinline preload="none" poster="'+f.v+'.jpg" data-q="'+f.v+'"></video><div class="rf-copy"><span class="mono gold-txt">The Capitol beat</span><h2>'+f.t+'</h2></div>';
