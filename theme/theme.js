@@ -8,6 +8,14 @@
     var a=document.getElementById('cookie-accept'),d=document.getElementById('cookie-decline');
     if(a)a.onclick=function(){set('all','accepted')};if(d)d.onclick=function(){set('none','declined')}}
 
+
+  /* The District Daily games: the games file is served as text, so it is loaded into the frame directly */
+  (function(){var U='/content/files/2026/09/wdcm_games_v2.html',cache=null;
+    function fix(){[].forEach.call(document.querySelectorAll('iframe'),function(f){var s=f.getAttribute('src')||'';if(s.indexOf('wdcm_games_v2.html')<0||f.srcdoc||f.dataset.wd2)return;f.dataset.wd2='1';
+      var m=/embed=([a-z0-9]+)/i.exec(s),pre=m?('<scr'+'ipt>location.hash='+JSON.stringify(m[1])+';</scr'+'ipt>'):'';
+      (cache||(cache=fetch(U).then(function(r){return r.text()}))).then(function(h){var n=f.cloneNode(false);n.removeAttribute('src');n.dataset.wd2='1';n.setAttribute('data-wgfix','1');n.srcdoc=pre+h;if(f.parentNode)f.parentNode.replaceChild(n,f)})})}
+    fix();var k=0,iv=setInterval(function(){fix();if(++k>40)clearInterval(iv)},250)})();
+
   if(!document.body.classList.contains('wd-plain'))return;
   var KEY='6a3e40e14a8c49d7da3546ac98',API='/ghost/api/content/';
   function api(res,p){var u=new URL(API+res,location.origin);u.searchParams.set('key',KEY);for(var k in p)u.searchParams.set(k,p[k]);return fetch(u).then(function(r){return r.json()})}

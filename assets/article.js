@@ -11,7 +11,7 @@
   function card(p){return '<a class="card" href="'+link(p)+'"><div class="ph">'+(p.feature_image?'<img loading="lazy" src="'+img(p.feature_image,800)+'" alt="">':'')+'</div><div class="tx"><span class="sec">'+esc(p.primary_tag?p.primary_tag.name:'News')+'</span><h3>'+esc(p.title)+'</h3><span class="ago">'+ago(p.published_at)+'</span></div></a>'}
 
   /* clock + nav shared with home */
-  var NAV=[['Politics','politics'],['National','national-news'],['Sports','dc-sports'],['Business','business'],['Culture','culture'],['Food & Drink','food-drink'],['DC Answers','dc-answers']];
+  var NAV=[['National','national-news'],['Politics','politics'],['Sports','dc-sports'],['Business','business'],['Culture','culture'],['Food & Drink','food-drink'],['DC Answers','dc-answers']];
   var nav=document.getElementById('sectionsNav');if(nav)nav.innerHTML=NAV.map(function(n){return '<a href="'+(window.WDCM_LIVE?'/tag/'+n[1]+'/':'./#room-'+n[1])+'">'+n[0]+'</a>'}).join('');
   function tick(){var el=document.getElementById('sysClock');if(el)el.textContent='Washington, DC  '+new Date().toLocaleString('en-US',{weekday:'short',month:'short',day:'numeric',hour:'numeric',minute:'2-digit',timeZone:'America/New_York'})}tick();setInterval(tick,15000);
   fetch('https://api.open-meteo.com/v1/forecast?latitude=38.9072&longitude=-77.0369&current=temperature_2m&temperature_unit=fahrenheit').then(function(r){return r.json()}).then(function(d){document.getElementById('sysWeather').textContent=Math.round(d.current.temperature_2m)+'°F'}).catch(function(){});

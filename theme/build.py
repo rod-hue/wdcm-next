@@ -9,7 +9,7 @@ T = os.path.join(ROOT, 'theme')
 OUT = os.path.join(T, 'dist', 'wdcm2')
 LEGACY = os.environ.get('WDCM_LEGACY', '')          # unpacked live wdcm theme, for legacy templates
 MEDIA = 'https://rod-hue.github.io/wdcm-next/assets/'
-VERSION = '2.0.0'
+VERSION = '2.0.1'
 
 def read(p): return open(p, encoding='utf-8').read()
 def write(p, s):
