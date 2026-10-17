@@ -59,7 +59,7 @@
 
   /* masthead: dark glass over the films, cream elsewhere */
   var mast=document.getElementById('mast');
-  if(mast&&document.body.classList.contains('home')){var DARK='.cine,.front,.room.ch,#dome,.pulse-band,.lead-wrap,.foot,.mq.gold';var tick=false;
+  if(mast&&document.body.classList.contains('home')){var DARK='.cine,.front,.room.ch,#dome,.pulse-band,.lead-wrap,.foot,.mq.gold,.band.rn,.scores,.games,.voices.vs';var tick=false;
     var upd=function(){tick=false;var y=mast.getBoundingClientRect().bottom+4,el=document.elementFromPoint(innerWidth/2,y);mast.classList.toggle('dark',!!(el&&el.closest(DARK)))};
     addEventListener('scroll',function(){if(!tick){tick=true;requestAnimationFrame(upd)}},{passive:true});setTimeout(upd,300)}
   if(false){
@@ -71,12 +71,12 @@
   if(stage){api('posts/',{limit:5,filter:'tag:-dc-answers+feature_image:-null',fields:'id,title,slug,feature_image,custom_excerpt,primary_tag,published_at',include:'tags'}).then(function(d){var ps=d.posts||[];if(!ps.length)return;
     stage.innerHTML=ps.map(function(p,i){return '<article class="fr-slide'+(i?'':' on')+'"><div class="bg"><img src="'+img(p.feature_image,2000)+'" alt=""'+(i?' loading="lazy"':'')+'></div><div class="fr-copy"><span class="n">0'+(i+1)+'</span><span class="tagpill">'+esc(p.primary_tag?p.primary_tag.name:'News')+'</span><h2>'+esc(p.title).split(' ').map(function(w){return '<span class="w"><span>'+w+'</span></span>'}).join(' ')+'</h2><p>'+esc(p.custom_excerpt||'')+'</p></div><a class="cover" data-cursor="Read" href="article.html?s='+encodeURIComponent(p.slug)+'" aria-label="'+esc(p.title)+'"></a></article>'}).join('');
     var bars=document.getElementById('frBars');bars.innerHTML=ps.map(function(_,i){return '<button aria-label="Story '+(i+1)+'"><i></i></button>'}).join('');
-    var slides=[].slice.call(stage.children),bs=[].slice.call(bars.children),cur=0,tl=null,DUR=7;
+    var slides=[].slice.call(stage.children),bs=[].slice.call(bars.children),cur=0,tl=null,DUR=3.4;
     function go(i,dir){var prev=slides[cur];cur=(i+slides.length)%slides.length;var s=slides[cur];
       bs.forEach(function(b,j){b.classList.toggle('done',j<cur);b.querySelector('i').style.transform=j<cur?'scaleX(1)':'scaleX(0)'});
       slides.forEach(function(x){x.style.zIndex=x===s?2:x===prev?1:0});
-      if(G&&!reduce&&prev!==s){G.fromTo(s,{clipPath:dir<0?'inset(0 100% 0 0)':'inset(0 0 0 100%)'},{clipPath:'inset(0 0 0 0%)',duration:1.1,ease:'expo.inOut',onComplete:function(){prev.classList.remove('on')}});
-        G.from(s.querySelectorAll('h2 .w>span'),{yPercent:110,duration:1,ease:'expo.out',stagger:.03,delay:.45})}else if(prev!==s)prev.classList.remove('on');
+      if(G&&!reduce&&prev!==s){G.fromTo(s,{clipPath:dir<0?'inset(0 100% 0 0)':'inset(0 0 0 100%)'},{clipPath:'inset(0 0 0 0%)',duration:.8,ease:'expo.inOut',onComplete:function(){prev.classList.remove('on')}});
+        G.from(s.querySelectorAll('h2 .w>span'),{yPercent:110,duration:1,ease:'expo.out',stagger:.025,delay:.3})}else if(prev!==s)prev.classList.remove('on');
       s.classList.add('on');
       if(tl)tl.kill();var bar=bs[cur].querySelector('i');if(G){tl=G.fromTo(bar,{scaleX:0},{scaleX:1,duration:DUR,ease:'none',onComplete:function(){go(cur+1,1)}})}}
     bs.forEach(function(b,j){b.onclick=function(){go(j,j<cur?-1:1)}});

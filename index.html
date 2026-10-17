@@ -10,9 +10,9 @@
 <link rel="icon" href="assets/icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..700&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/wdcm.css?v=939a078e">
-<link rel="stylesheet" href="assets/fx.css?v=939a078e">
-<link rel="stylesheet" href="assets/fx2.css?v=939a078e">
+<link rel="stylesheet" href="assets/wdcm.css?v=9c3c0339">
+<link rel="stylesheet" href="assets/fx.css?v=9c3c0339">
+<link rel="stylesheet" href="assets/fx2.css?v=9c3c0339">
 </head>
 <body class="home">
 <div class="loader" id="loader" aria-hidden="true">
@@ -83,8 +83,9 @@
   </section>
 
   <!-- RIGHT NOW: 4 up -->
-  <section class="band">
-    <div class="band-head"><h2 class="kicker"><span class="star"></span>Right now in the District</h2><span class="mono muted" id="todayCount"></span></div>
+  <section class="band rn" id="rightNowSec">
+    <div class="rn-fx" aria-hidden="true"><i class="rn-orb o1"></i><i class="rn-orb o2"></i><i class="rn-orb o3"></i><div class="rn-giant"><span>Right now &middot; Right now &middot; Right now &middot; Right now &middot;&nbsp;</span><span>Right now &middot; Right now &middot; Right now &middot; Right now &middot;&nbsp;</span></div></div>
+    <div class="rn-head"><span class="mono gold-txt"><i class="live-dot"></i> Live from the newsroom</span><h2>Right now in <em>the District.</em></h2><span class="mono muted" id="todayCount"></span></div>
     <div class="grid4" id="rightNow"></div>
   </section>
 
@@ -115,14 +116,16 @@
   </section>
 
   <!-- VOICES -->
-  <section class="voices">
-    <div class="voices-inner">
-      <div>
-        <h2 class="kicker light"><span class="star"></span>Voices of the District</h2>
-        <p class="voices-copy">The writers, contributors and newsmakers behind every story. Your story belongs here.</p>
-        <a class="sub-btn gold" href="mailto:editor@washingtondcmagazine.com?subject=Story%20pitch%20for%20WDCM">Pitch your story</a>
+  <section class="voices vs">
+    <div class="vs-fx" aria-hidden="true"><span>Voices</span></div>
+    <div class="vs-inner">
+      <div class="vs-head">
+        <span class="mono gold-txt">The masthead</span>
+        <h2>Voices of <em>the District.</em></h2>
+        <p class="voices-copy">The writers, contributors and newsmakers behind every story we publish, from the Wilson Building to the national stage.</p>
+        <div class="vs-ctl"><button id="vsPrev" aria-label="Previous voices">&larr;</button><button id="vsNext" aria-label="Next voices">&rarr;</button><a class="sub-btn gold" href="https://www.washingtondcmagazine.com/contact/">Pitch your story</a></div>
       </div>
-      <div class="authors" id="authors"></div>
+      <div class="authors vs-view" id="authors"></div>
     </div>
   </section>
 
@@ -172,9 +175,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
-<script src="assets/wdcm.js?v=939a078e"></script>
-<script src="assets/fx.js?v=939a078e"></script>
-<script src="assets/live.js?v=939a078e"></script>
-<script src="assets/fx2.js?v=939a078e"></script>
+<script src="assets/wdcm.js?v=9c3c0339"></script>
+<script src="assets/fx.js?v=9c3c0339"></script>
+<script src="assets/live.js?v=9c3c0339"></script>
+<script src="assets/fx2.js?v=9c3c0339"></script>
 </body>
 </html>

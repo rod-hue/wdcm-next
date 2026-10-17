@@ -30,9 +30,7 @@
         new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){if(!v.src)pick();v.play().catch(function(){})}else v.pause()})},{rootMargin:'200px'}).observe(v)}
       G.fromTo(s.querySelector('.ch-bg'),{yPercent:-8},{yPercent:8,ease:'none',scrollTrigger:{trigger:s,start:'top bottom',end:'bottom top',scrub:true}});
       G.fromTo(s.querySelector('.ch-giant'),{xPercent:10},{xPercent:-40,ease:'none',scrollTrigger:{trigger:s,start:'top bottom',end:'bottom top',scrub:true}});
-      var lead=s.querySelector('.ch-lead'),mob=innerWidth<980;
-      if(lead){G.fromTo(lead,{rotateY:mob?-10:-24,rotateX:mob?8:12,z:-120},{rotateY:mob?-3:-6,rotateX:2,z:0,ease:'none',scrollTrigger:{trigger:s,start:'top 90%',end:'center 45%',scrub:1}});
-        [['.pg1',22],['.pg2',44],['.pg3',66]].forEach(function(a){var el=lead.querySelector(a[0]);if(el)G.fromTo(el,{x:0,y:0,z:-10},{x:a[1],y:a[1],z:-a[1]*2,ease:'none',scrollTrigger:{trigger:s,start:'top 90%',end:'center 45%',scrub:1}})})}
+      var lead=s.querySelector('.ch-lead-wrap');if(lead)G.fromTo(lead,{y:80,scale:.94},{y:0,scale:1,ease:'none',scrollTrigger:{trigger:s,start:'top 95%',end:'center 55%',scrub:1}});
       G.from(s.querySelectorAll('.ch-head > *'),{y:40,opacity:0,duration:1,ease:'expo.out',stagger:.08,scrollTrigger:{trigger:s,start:'top 75%',once:true}});
       G.from(s.querySelectorAll('.ch-item'),{x:80,opacity:0,duration:1,ease:'expo.out',stagger:.1,scrollTrigger:{trigger:s.querySelector('.ch-list'),start:'top 85%',once:true}});
       ScrollTrigger.refresh()});
@@ -41,7 +39,7 @@
       rooms[1].parentNode.insertBefore(marquee(['Politics','National','Sports','Business','Culture','Food & Drink','DC Answers'],''),rooms[1]);
       rooms[3].parentNode.insertBefore(marquee(['Washington DC Magazine','The capital, live','Every story, every hour'],'rev gold'),rooms[3]);mo.disconnect()}});
     mo.observe(document.body,{childList:true,subtree:true});
-    setInterval(function(){boxIn('.bt')},1200);
+
     /* THE DOME: the sculpture turns with your scroll; words pass behind it */
     (function(){var cv=document.getElementById('domeCv');if(!cv)return;var N=120,mob=innerWidth<760,dir='assets/seq/'+(mob?'dome-m':'dome')+'/',x=cv.getContext('2d'),imgs=[],cur=0;
       cv.width=mob?640:1080;cv.height=cv.width;
@@ -53,7 +51,7 @@
       ScrollTrigger.create({trigger:'#dome',start:'top top',end:'bottom bottom',onUpdate:function(st){var p=st.progress,f=Math.min(N-1,Math.round(p*(N-1)));if(f!==cur){cur=f;draw(f)}
         var seg=Math.min(2,Math.floor(p*3));words.forEach(function(w,i){var local=p*3-i;w.style.opacity=i===seg?Math.max(0,Math.min(1,local<.5?local*2.2:(1-local)*2.2)):0;w.style.transform='translateX('+((.5-local)*30)+'vw) scale('+(1+local*.15)+')'});
         lines.forEach(function(l,i){l.classList.toggle('on',i<=seg)})}});
-      G.from(cv,{scale:.7,opacity:0,duration:1.4,ease:'expo.out',scrollTrigger:{trigger:'#dome',start:'top 60%',once:true}})})();
+      G.fromTo(cv,{scale:.8,opacity:0},{scale:1,opacity:1,duration:1.6,ease:'expo.out',delay:.5,clearProps:'transform'})})();
   }
 
   /* =================== ARTICLE =================== */
