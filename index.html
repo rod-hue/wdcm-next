@@ -11,8 +11,16 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..700&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/wdcm.css">
+<link rel="stylesheet" href="assets/fx.css">
 </head>
 <body class="home">
+<div class="loader" id="loader" aria-hidden="true">
+  <svg class="ld-dc" viewBox="0 0 600 600"><path class="ld-path" d="M68.2,182.2L236.1,10L531.8,300.2L244.1,590L244.1,361.6Z"/><circle class="ld-cap" cx="310.9" cy="309" r="7"/><circle class="ld-ring" cx="310.9" cy="309" r="7"/></svg>
+  <img class="ld-logo" src="assets/logo-light@2x.png" alt="">
+  <div class="ld-meta mono"><span>Live from the nation&rsquo;s capital</span><b id="ldN">0</b></div>
+</div>
+<div class="cursor" aria-hidden="true"><i></i><b>Read</b></div>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="liquid"><feTurbulence type="fractalNoise" baseFrequency="0.012 0.02" numOctaves="2" seed="3" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="0" xChannelSelector="R" yChannelSelector="G"/></filter></svg>
 
 <!-- SYSTEM BAR: live clock, weather, freshness -->
 <div class="sysbar mono">
@@ -24,7 +32,7 @@
 <!-- MASTHEAD -->
 <header class="mast" id="mast">
   <a class="brand" href="./" aria-label="Washington DC Magazine home">
-    <img class="logo" src="assets/logo@2x.png" alt="Washington DC Magazine" width="913" height="120">
+    <img class="logo logo-d" src="assets/logo@2x.png" alt="Washington DC Magazine" width="913" height="120"><img class="logo logo-l" src="assets/logo-light@2x.png" alt="" width="913" height="120">
   </a>
   <nav class="sections" id="sectionsNav" aria-label="Sections"></nav>
   <div class="mast-actions">
@@ -34,8 +42,30 @@
 </header>
 
 <main>
+  <section class="cine" id="cine">
+    <div class="cine-pin">
+      <video class="cine-vid" id="cineVid" muted loop playsinline autoplay preload="auto" poster="assets/film/hero.jpg" data-q="assets/film/hero"></video>
+      <div class="knock"><span class="k1">Washington</span><span class="k2">D<span class="kdot">.</span>C.</span></div>
+      <div class="knock line" aria-hidden="true"><span class="k1">Washington</span><span class="k2">D.C.</span></div>
+      <div class="cine-ui">
+        <span class="mono gold-txt cine-kick">Washington DC Magazine &middot; Est. 2026</span>
+        <p class="cine-line">The capital, live. <em>Every story, every hour.</em></p>
+        <span class="mono cine-scroll">Scroll into the city &darr;</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="front" id="front" aria-label="Top stories">
+    <div class="fr-stage" id="frStage"></div>
+    <div class="fr-ui">
+      <span class="mono gold-txt">The Front Page</span>
+      <div class="fr-bars" id="frBars"></div>
+      <div class="fr-nav"><button id="frPrev" aria-label="Previous story">&larr;</button><button id="frNext" aria-label="Next story">&rarr;</button></div>
+    </div>
+  </section>
+
   <!-- LEAD + THE SIGNAL (live wire) -->
-  <section class="lead-wrap">
+  <section class="lead-wrap" id="newsroom">
     <article class="lead" id="lead"><div class="sk sk-lead"></div></article>
     <aside class="signal" aria-label="The Signal, live wire">
       <div class="signal-head"><span class="mono">The Signal</span><span class="mono pulse-txt"><i class="live-dot"></i>Live</span></div>
@@ -51,7 +81,7 @@
   </section>
 
   <!-- PULSE: trending topics measured from the last 100 stories -->
-  <section class="pulse-band">
+  <section class="pulse-band"><video class="band-vid" muted loop playsinline preload="none" poster="assets/film/data.jpg" data-q="assets/film/data"></video>
     <div class="pulse-inner">
       <h2 class="kicker light"><span class="star"></span>The Pulse</h2>
       <p class="pulse-sub">What the District is reading about this week, measured live from our newsroom.</p>
@@ -112,6 +142,8 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
 <script src="assets/wdcm.js"></script>
+<script src="assets/fx.js"></script>
 </body>
 </html>

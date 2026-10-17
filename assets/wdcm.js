@@ -107,7 +107,7 @@
   var mast=document.getElementById('mast');addEventListener('scroll',function(){mast.classList.toggle('slim',scrollY>120)},{passive:true});
   var revealed=new WeakSet();
   function reveal(){if(!window.gsap||reduce)return;gsap.registerPlugin(ScrollTrigger);
-    document.querySelectorAll('.card,.ans,.author,.pulse-cloud a,.kicker').forEach(function(el,i){if(revealed.has(el))return;revealed.add(el);
+    document.querySelectorAll('.card,.ans,.author,.pulse-cloud a').forEach(function(el,i){if(revealed.has(el))return;revealed.add(el);
       gsap.from(el,{y:28,opacity:0,duration:.9,ease:'power3.out',delay:(i%4)*.05,scrollTrigger:{trigger:el,start:'top 92%',once:true}})});ScrollTrigger.refresh()}
   document.getElementById('yr').textContent=new Date().getFullYear();
 })();
