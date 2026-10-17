@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Washington DC Magazine</title>
+<meta name="description" content="Live from the nation's capital. Politics, culture, business, sports and the people shaping Washington, DC and the DMV.">
+<meta name="theme-color" content="#0e1830">
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" href="assets/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..700;1,8..60,400..600&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/wdcm.css">
+</head>
+<body class="post">
+
+<!-- SYSTEM BAR: live clock, weather, freshness -->
+<div class="sysbar mono">
+  <div class="sys-left"><span class="live-dot"></span><span id="sysClock">Washington, DC</span><span class="sep">/</span><span id="sysWeather">--°</span></div>
+  <div class="sys-ticker" aria-label="Latest headlines"><div class="tk" id="ticker"></div></div>
+  <div class="sys-right"><span id="sysFresh">Updating</span></div>
+</div>
+
+<!-- MASTHEAD -->
+<header class="mast" id="mast">
+  <a class="brand" href="./" aria-label="Washington DC Magazine home">
+    <img class="logo" src="assets/logo@2x.png" alt="Washington DC Magazine" width="913" height="120">
+  </a>
+  <nav class="sections" id="sectionsNav" aria-label="Sections"></nav>
+  <div class="mast-actions">
+    <button class="icon-btn" id="searchBtn" aria-label="Search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/></svg></button>
+    <a class="sub-btn" href="https://www.washingtondcmagazine.com/#/portal/signup" target="_blank" rel="noopener">Subscribe free</a>
+  </div>
+</header>
+
+<div class="rprog" aria-hidden="true"><i id="rbar"></i></div>
+<div class="minibar" id="minibar"><span class="mono" id="mbSec"></span><b id="mbTitle"></b><span class="mono" id="mbLeft"></span></div>
+
+<main id="article">
+  <header class="phero" id="phero"><div class="sk sk-lead"></div></header>
+
+  <div class="pbody-wrap">
+    <aside class="prail" aria-label="Share">
+      <span class="mono">Share</span>
+      <a id="shX" target="_blank" rel="noopener" aria-label="Share on X"><svg viewBox="0 0 24 24"><path d="M4 4l16 16M20 4L4 20"/></svg></a>
+      <a id="shFb" target="_blank" rel="noopener" aria-label="Share on Facebook"><svg viewBox="0 0 24 24"><path d="M14 8h3V4h-3a4 4 0 00-4 4v3H7v4h3v6h4v-6h3l1-4h-4V8z"/></svg></a>
+      <a id="shIn" target="_blank" rel="noopener" aria-label="Share on LinkedIn"><svg viewBox="0 0 24 24"><path d="M6 9v11M6 5v.5M10 20v-6a3 3 0 016 0v6M10 9v11"/></svg></a>
+      <a id="shWa" target="_blank" rel="noopener" aria-label="Share on WhatsApp"><svg viewBox="0 0 24 24"><path d="M4 20l1.5-4A8 8 0 1112 20a8 8 0 01-4-1z"/></svg></a>
+      <button id="shCopy" aria-label="Copy link"><svg viewBox="0 0 24 24"><path d="M10 14a4 4 0 006 0l3-3a4 4 0 00-6-6l-1 1M14 10a4 4 0 00-6 0l-3 3a4 4 0 006 6l1-1"/></svg></button>
+      <button class="feat-btn" id="featBtn" aria-label="Share your feature"><svg viewBox="0 0 24 24"><path d="M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.4 6.8 19.1l1-5.8L3.5 9.2l5.9-.9z"/></svg></button>
+    </aside>
+
+    <article class="pcontent">
+      <div class="ptools">
+        <button class="listen" id="listenBtn"><i></i><span>Listen to this story</span></button>
+        <div class="tsize"><button id="tsMinus" aria-label="Smaller text">A&minus;</button><button id="tsPlus" aria-label="Larger text">A+</button></div>
+      </div>
+      <div class="brief" id="brief" hidden><span class="mono gold-txt">In brief</span><p id="briefTxt"></p></div>
+      <div class="gh-content" id="content"></div>
+      <div class="featured-cta" id="featCta">
+        <div><span class="mono gold-txt">Featured in WDCM?</span><h3>Share your feature like a headline.</h3><p>Turn this story into branded graphics for Instagram, your story and LinkedIn in one tap.</p></div>
+        <button class="sub-btn gold" id="featBtn2">Create my graphic</button>
+      </div>
+      <div class="ptags" id="ptags"></div>
+      <div class="byline-card" id="authorCard"></div>
+    </article>
+  </div>
+
+  <section class="upnext" id="upnext"></section>
+  <section class="band related"><div class="band-head"><h2 class="kicker"><span class="star"></span>More from <span id="relSec">WDCM</span></h2></div><div class="grid4" id="related"></div></section>
+</main>
+
+<!-- SHARE YOUR FEATURE STUDIO -->
+<div class="studio" id="studio" hidden>
+  <div class="studio-box">
+    <button class="studio-x" id="studioX" aria-label="Close">&times;</button>
+    <div class="studio-prev"><canvas id="cv" width="1080" height="1350"></canvas></div>
+    <div class="studio-side">
+      <span class="mono gold-txt">Share your feature</span>
+      <h3>As featured in<br><em>Washington DC Magazine</em></h3>
+      <div class="fmt" id="fmt"><button data-f="post" class="on">Post 4:5</button><button data-f="story">Story 9:16</button><button data-f="wide">Landscape</button></div>
+      <button class="sub-btn big gold" id="dl">Download graphic</button>
+      <button class="sub-btn ghost" id="nshare">Share&hellip;</button>
+      <p class="mono muted">Tag @washingtondcmagazine when you post.</p>
+    </div>
+  </div>
+</div>
+
+<footer class="foot">
+  <img class="foot-logo" src="assets/logo-light@2x.png" alt="Washington DC Magazine" width="913" height="120">
+  <div class="foot-row mono">
+    <span>&copy; <span id="yr"></span> Washington DC Magazine</span>
+    <span>Independent. Daily. Free to read.</span>
+    <a href="https://www.washingtondcmagazine.com/about/">About</a>
+    <a href="mailto:editor@washingtondcmagazine.com">editor@washingtondcmagazine.com</a>
+  </div>
+</footer>
+
+<!-- SEARCH -->
+<div class="search" id="search" hidden>
+  <div class="search-box">
+    <input id="q" type="search" placeholder="Search 1,000+ stories" autocomplete="off">
+    <ol id="qres"></ol>
+    <span class="mono muted">Press Esc to close</span>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="assets/article.js"></script>
+</body>
+</html>

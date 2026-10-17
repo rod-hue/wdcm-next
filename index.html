@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Washington DC Magazine</title>
+<meta name="description" content="Live from the nation's capital. Politics, culture, business, sports and the people shaping Washington, DC and the DMV.">
+<meta name="theme-color" content="#0e1830">
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" href="assets/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..700&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/wdcm.css">
+</head>
+<body class="home">
+
+<!-- SYSTEM BAR: live clock, weather, freshness -->
+<div class="sysbar mono">
+  <div class="sys-left"><span class="live-dot"></span><span id="sysClock">Washington, DC</span><span class="sep">/</span><span id="sysWeather">--°</span></div>
+  <div class="sys-ticker" aria-label="Latest headlines"><div class="tk" id="ticker"></div></div>
+  <div class="sys-right"><span id="sysFresh">Updating</span></div>
+</div>
+
+<!-- MASTHEAD -->
+<header class="mast" id="mast">
+  <a class="brand" href="./" aria-label="Washington DC Magazine home">
+    <img class="logo" src="assets/logo@2x.png" alt="Washington DC Magazine" width="913" height="120">
+  </a>
+  <nav class="sections" id="sectionsNav" aria-label="Sections"></nav>
+  <div class="mast-actions">
+    <button class="icon-btn" id="searchBtn" aria-label="Search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/></svg></button>
+    <a class="sub-btn" href="https://www.washingtondcmagazine.com/#/portal/signup" target="_blank" rel="noopener">Subscribe free</a>
+  </div>
+</header>
+
+<main>
+  <!-- LEAD + THE SIGNAL (live wire) -->
+  <section class="lead-wrap">
+    <article class="lead" id="lead"><div class="sk sk-lead"></div></article>
+    <aside class="signal" aria-label="The Signal, live wire">
+      <div class="signal-head"><span class="mono">The Signal</span><span class="mono pulse-txt"><i class="live-dot"></i>Live</span></div>
+      <ol class="wire" id="wire"><li class="sk sk-line"></li><li class="sk sk-line"></li><li class="sk sk-line"></li><li class="sk sk-line"></li></ol>
+      <button class="new-pill" id="newPill" hidden>New stories <b id="newCount">0</b> &uarr;</button>
+    </aside>
+  </section>
+
+  <!-- RIGHT NOW: 4 up -->
+  <section class="band">
+    <div class="band-head"><h2 class="kicker"><span class="star"></span>Right now in the District</h2><span class="mono muted" id="todayCount"></span></div>
+    <div class="grid4" id="rightNow"></div>
+  </section>
+
+  <!-- PULSE: trending topics measured from the last 100 stories -->
+  <section class="pulse-band">
+    <div class="pulse-inner">
+      <h2 class="kicker light"><span class="star"></span>The Pulse</h2>
+      <p class="pulse-sub">What the District is reading about this week, measured live from our newsroom.</p>
+      <div class="pulse-cloud" id="pulse"></div>
+    </div>
+  </section>
+
+  <!-- SECTION ROOMS -->
+  <div id="rooms"></div>
+
+  <!-- DC ANSWERS -->
+  <section class="answers">
+    <div class="band-head"><h2 class="kicker"><span class="star"></span>DC Answers</h2><a class="mono more" href="https://www.washingtondcmagazine.com/tag/dc-answers/">All answers &rarr;</a></div>
+    <div class="ans-list" id="answers"></div>
+  </section>
+
+  <!-- VOICES -->
+  <section class="voices">
+    <div class="voices-inner">
+      <div>
+        <h2 class="kicker light"><span class="star"></span>Voices of the District</h2>
+        <p class="voices-copy">The writers, contributors and newsmakers behind every story. Your story belongs here.</p>
+        <a class="sub-btn gold" href="mailto:editor@washingtondcmagazine.com?subject=Story%20pitch%20for%20WDCM">Pitch your story</a>
+      </div>
+      <div class="authors" id="authors"></div>
+    </div>
+  </section>
+
+  <!-- NEWSLETTER -->
+  <section class="letter">
+    <div class="letter-card">
+      <span class="mono gold-txt">Every morning, 7am</span>
+      <h2>The District, <em>before your coffee.</em></h2>
+      <p>Politics, culture and the stories DC is talking about, in one free email.</p>
+      <a class="sub-btn big" href="https://www.washingtondcmagazine.com/#/portal/signup" target="_blank" rel="noopener">Get the newsletter</a>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <img class="foot-logo" src="assets/logo-light@2x.png" alt="Washington DC Magazine" width="913" height="120">
+  <div class="foot-row mono">
+    <span>&copy; <span id="yr"></span> Washington DC Magazine</span>
+    <span>Independent. Daily. Free to read.</span>
+    <a href="https://www.washingtondcmagazine.com/about/">About</a>
+    <a href="mailto:editor@washingtondcmagazine.com">editor@washingtondcmagazine.com</a>
+  </div>
+</footer>
+
+<!-- SEARCH -->
+<div class="search" id="search" hidden>
+  <div class="search-box">
+    <input id="q" type="search" placeholder="Search 1,000+ stories" autocomplete="off">
+    <ol id="qres"></ol>
+    <span class="mono muted">Press Esc to close</span>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="assets/wdcm.js"></script>
+</body>
+</html>
