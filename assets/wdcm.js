@@ -103,19 +103,30 @@
       st.querySelectorAll('.fs-frame').forEach(function(f){f.addEventListener('mouseenter',function(){hold=true;show(+f.dataset.i)});f.addEventListener('mouseleave',function(){hold=false})});
       scr.addEventListener('mouseenter',function(){hold=true});scr.addEventListener('mouseleave',function(){hold=false});
       new IntersectionObserver(function(es){vis=es[0].isIntersecting},{threshold:.25}).observe(scr);
-      if(!reduce)setInterval(function(){if(vis&&!hold&&!document.hidden)show(cur+1)},4500);
+      if(!reduce)setInterval(function(){if(vis&&!hold&&!document.hidden)show(cur+1)},2800);
       var ck=st.querySelector('.jt-clock');function clk(){ck.textContent=new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',timeZone:'America/New_York'})+' ET'}clk();setInterval(clk,30000);
       /* bottom line: live Washington scores from the scoreboard, then the sports wire */
       var tt=st.querySelector('.jt-tt');function tick(){var sc=[].slice.call(document.querySelectorAll('#scRow .sc-card:not(.sk)')).map(function(c){var n=c.querySelector('.sc-top b'),b=c.querySelector('.sc-big'),stt=c.querySelector('.sc-st');return n&&b&&b.textContent.trim()!=='—'?'<span><b>'+esc(n.textContent).toUpperCase()+'</b> '+esc(b.textContent)+' <em>'+esc(stt?stt.textContent:'')+'</em></span>':''}).filter(Boolean);
         var hd=ps.map(function(q){return '<span>'+esc(q.title)+'</span>'});var all=sc.concat(hd).join('<i>&#9670;</i>')+'<i>&#9670;</i>';tt.innerHTML=all+all}
       tick();setTimeout(tick,4000);setInterval(tick,60000)},
-    /* BUSINESS: the index, a ledger of big headlines with a floating preview */
-    index:function(s,ps){var st=s.querySelector('.ch-stage');st.className='ch-stage bz';
-      st.innerHTML='<div class="bz-hd mono"><span>No.</span><span>Story</span><span>Filed</span></div>'+ps.map(function(q,i){return '<a class="bz-row rv" href="'+link(q)+'" data-img="'+img(q.feature_image,900)+'"><span class="bz-n">'+String(i+1).padStart(2,'0')+'</span><span class="bz-t"><img class="bz-mthumb" src="'+img(q.feature_image,300)+'" alt="" loading="lazy"><span><span class="sec">'+esc(sec(q))+'</span><h4>'+esc(q.title)+'</h4></span></span><span class="bz-f mono">'+ago(q.published_at)+'<i>&rarr;</i></span></a>'}).join('')+'<div class="bz-float" aria-hidden="true"><img alt=""></div>';
-      var fl=st.querySelector('.bz-float'),fi=fl.querySelector('img'),fx=0,fy=0,tx=0,ty=0,on=false;
-      st.querySelectorAll('.bz-row').forEach(function(r){r.addEventListener('mouseenter',function(){fi.src=r.dataset.img;on=true;fl.classList.add('on')});r.addEventListener('mouseleave',function(){on=false;fl.classList.remove('on')})});
-      st.addEventListener('mousemove',function(e){var b=st.getBoundingClientRect();tx=e.clientX-b.left;ty=e.clientY-b.top});
-      (function mv(){requestAnimationFrame(mv);if(!on&&!fl.classList.contains('on'))return;fx+=(tx-fx)*.14;fy+=(ty-fy)*.14;fl.style.transform='translate('+fx+'px,'+fy+'px) translate(-50%,-50%) rotate('+((tx-fx)*.03)+'deg)'})()},
+    /* BUSINESS: The Newsstand, every story printed as a WDCM magazine cover; the cover story flips through the issue */
+    index:function(s,ps){var st=s.querySelector('.ch-stage');st.className='ch-stage ns';
+      var mo=new Date().toLocaleDateString('en-US',{month:'long',year:'numeric'}).toUpperCase();
+      function cover(q,i,big){var others=ps.filter(function(x){return x!==q}).slice(0,3);
+        return '<a class="nc'+(big?' nc-big':'')+'" href="'+link(q)+'"><img src="'+img(q.feature_image,big?1400:700)+'" alt=""'+(big?' data-fcx=".38"':'')+(big&&!i?'':' loading="lazy"')+'>'+
+          '<span class="nc-mast"><b>WDCM</b><em>Washington DC Magazine</em></span><span class="nc-issue mono">The Business Issue &middot; '+mo+'</span>'+
+          (big?'<span class="nc-lines">'+others.map(function(o){return '<span>'+esc(o.title.length>58?o.title.slice(0,o.title.lastIndexOf(' ',56))+'…':o.title)+'</span>'}).join('')+'</span>':'')+
+          '<span class="nc-hed"><span class="nc-kick mono">'+(big?'Cover story':esc(sec(q)))+'</span><b>'+esc(q.title)+'</b></span>'+
+          (big?'<span class="nc-bar" aria-hidden="true"><i></i><span class="mono">$0.00 &middot; FREE</span></span>':'')+'</a>'}
+      st.innerHTML='<div class="ns-feature"><div class="ns-book">'+ps.slice(0,5).map(function(q,i){return '<div class="ns-page'+(i?'':' on')+'">'+cover(q,i,true)+'</div>'}).join('')+'</div>'+
+        '<div class="ns-dots">'+ps.slice(0,5).map(function(_,i){return '<button aria-label="Cover '+(i+1)+'"'+(i?'':' class="on"')+'></button>'}).join('')+'</div></div>'+
+        '<div class="ns-rack"><div class="ns-rack-head mono"><span>On the stand</span><span>'+ps.length+' stories</span></div><div class="ns-shelf">'+ps.slice(1,7).map(function(q,i){return cover(q,i,false)}).join('')+'</div><div class="ns-rail" aria-hidden="true"></div></div>';
+      var pages=[].slice.call(st.querySelectorAll('.ns-page')),dots=[].slice.call(st.querySelectorAll('.ns-dots button')),cur=0,hold=false,vis=false;
+      function flip(i){i=(i+pages.length)%pages.length;if(i===cur)return;var old=pages[cur];old.classList.remove('on');old.classList.add('out');setTimeout(function(){old.classList.remove('out')},900);cur=i;pages[cur].classList.add('on');dots.forEach(function(d,k){d.classList.toggle('on',k===cur)})}
+      dots.forEach(function(d,k){d.onclick=function(){flip(k)}});
+      var bk=st.querySelector('.ns-book');bk.addEventListener('mouseenter',function(){hold=true});bk.addEventListener('mouseleave',function(){hold=false});
+      new IntersectionObserver(function(es){vis=es[0].isIntersecting},{threshold:.3}).observe(bk);
+      if(!reduce)setInterval(function(){if(vis&&!hold&&!document.hidden)flip(cur+1)},4000)},
     /* CULTURE: the gallery wall, framed pieces with museum labels, drifting at different speeds */
     gallery:function(s,ps){var st=s.querySelector('.ch-stage');st.className='ch-stage gl';
       st.innerHTML=ps.slice(0,6).map(function(q,i){return '<a class="gl-piece rv g'+i+'" href="'+link(q)+'" data-speed="'+[.0,-.12,.08,-.06,.14,-.1][i]+'"><div class="gl-frame"><img src="'+img(q.feature_image,i?900:1500)+'" alt="" loading="lazy"></div><div class="gl-label"><span class="mono">'+esc(sec(q))+' &middot; '+ago(q.published_at)+'</span><h4>'+esc(q.title)+'</h4></div></a>'}).join('')},
