@@ -9,7 +9,7 @@ T = os.path.join(ROOT, 'theme')
 OUT = os.path.join(T, 'dist', 'wdcm2')
 LEGACY = os.environ.get('WDCM_LEGACY', '')          # unpacked live wdcm theme, for legacy templates
 MEDIA = 'https://rod-hue.github.io/wdcm-next/assets/'
-VERSION = '2.0.2'
+VERSION = '2.0.3'
 
 def read(p): return open(p, encoding='utf-8').read()
 def write(p, s):
@@ -46,8 +46,6 @@ for f in os.listdir(A):
     p = os.path.join(A, f)
     if os.path.isfile(p) and not f.startswith('.'):
         shutil.copy(p, os.path.join(OUT, 'assets', f) if os.path.isdir(os.path.join(OUT, 'assets')) else (os.makedirs(os.path.join(OUT, 'assets')) or os.path.join(OUT, 'assets', f)))
-for d in ['dome', 'dome-m']:
-    shutil.copytree(os.path.join(A, 'seq', d), os.path.join(OUT, 'assets', 'seq', d))
 shutil.copy(os.path.join(T, 'theme.css'), os.path.join(OUT, 'assets', 'theme.css'))
 shutil.copy(os.path.join(T, 'theme.js'), os.path.join(OUT, 'assets', 'theme.js'))
 
