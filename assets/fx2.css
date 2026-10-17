@@ -593,3 +593,8 @@ main img{object-position:50% 30%}
 @media (max-width:1000px){.ch-stage.ns{grid-template-columns:1fr}.ns-book{max-width:420px}}
 @media (max-width:560px){.ns-shelf{grid-template-columns:repeat(2,1fr)}.ns-shelf .nc:nth-child(n+5){display:none}.nc-lines{display:none}.nc-big .nc-hed b{font-size:26px}}
 @media (max-width:560px){.nc-big{box-shadow:inset 3px 0 0 rgba(255,255,255,.25),0 40px 80px -30px rgba(0,0,0,.95),-7px 7px 0 -2px #d9c79c,-13px 13px 0 -4px #b8964a}.ns-book{width:calc(100% - 14px);margin-left:14px}}
+/* dome: appears as soon as its first frame is drawn; a longer, slower turn */
+.dome{height:300svh}
+@media (max-width:760px){.dome{height:270svh}}
+.dome-cv{opacity:0;transform:scale(.86);transition:opacity 1.2s ease,transform 1.6s cubic-bezier(.2,.8,.2,1)}
+.dome-cv.ready{opacity:1;transform:none}

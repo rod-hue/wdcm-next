@@ -42,18 +42,20 @@
       rooms[3].parentNode.insertBefore(marquee(['Washington DC Magazine','The capital, live','Every story, every hour'],'rev gold'),rooms[3]);mo.disconnect()}});
     mo.observe(document.body,{childList:true,subtree:true});
 
-    /* THE DOME: the sculpture turns with your scroll; words pass behind it */
-    (function(){var cv=document.getElementById('domeCv');if(!cv)return;var N=120,mob=innerWidth<760,dir=(window.WDCM_MEDIA||'assets/')+'seq/'+(mob?'dome-m':'dome')+'/',x=cv.getContext('2d'),imgs=[],cur=0;
+    /* THE DOME: the sculpture turns with your scroll, eased frame to frame; words pass behind it */
+    (function(){var cv=document.getElementById('domeCv');if(!cv)return;var N=120,mob=innerWidth<760,dir=(window.WDCM_DOME||(window.WDCM_MEDIA||'assets/')+'seq/')+(mob?'dome-m':'dome')+'/',x=cv.getContext('2d'),imgs=[],shown=-1,want=0,pos=0;
       cv.width=mob?640:1080;cv.height=cv.width;
-      function draw(i){for(var k=0;k<N;k++){var im=imgs[i-k]&&imgs[i-k].ok?imgs[i-k]:imgs[i+k]&&imgs[i+k].ok?imgs[i+k]:null;if(im){x.clearRect(0,0,cv.width,cv.height);x.drawImage(im,(cv.width-im.naturalWidth*cv.height/im.naturalHeight)/2,0,im.naturalWidth*cv.height/im.naturalHeight,cv.height);return}}}
-      var started=false;function load(){if(started)return;started=true;var order=[];[8,4,2,1].forEach(function(s){for(var i=0;i<N;i+=s)if(order.indexOf(i)<0)order.push(i)});
-        order.forEach(function(i){var im=new Image();im.onload=function(){im.ok=1;if(Math.abs(i-cur)<4)draw(cur)};im.src=dir+String(i+1).padStart(3,'0')+'.webp';imgs[i]=im})}
+      function near(i){for(var k=0;k<N;k++){if(imgs[i-k]&&imgs[i-k].ok)return imgs[i-k];if(imgs[i+k]&&imgs[i+k].ok)return imgs[i+k]}return null}
+      function draw(i){var im=near(i);if(!im)return;x.clearRect(0,0,cv.width,cv.height);var w=im.naturalWidth*cv.height/im.naturalHeight;x.drawImage(im,(cv.width-w)/2,0,w,cv.height);shown=i;cv.classList.add('ready')}
+      /* first frame first, then a coarse pass round the whole turn, then every frame */
+      var order=[0];[8,4,2,1].forEach(function(s){for(var i=0;i<N;i+=s)if(order.indexOf(i)<0)order.push(i)});
+      order.forEach(function(i){var im=new Image();im.decoding='async';im.onload=function(){im.ok=1;if(shown<0||Math.abs(i-Math.round(pos))<3)draw(Math.round(pos))};im.src=dir+String(i+1).padStart(3,'0')+'.webp';imgs[i]=im});
       var words=[].slice.call(document.querySelectorAll('.dome-words span')),lines=[].slice.call(document.querySelectorAll('.dome-line'));if(lines[0])lines[0].classList.add('on');
-      load();
-      ScrollTrigger.create({trigger:'#dome',start:'top top',end:'bottom bottom',onUpdate:function(st){var p=st.progress,f=Math.min(N-1,Math.round(p*(N-1)));if(f!==cur){cur=f;draw(f)}
+      ScrollTrigger.create({trigger:'#dome',start:'top top',end:'bottom bottom',onUpdate:function(st){var p=st.progress;want=p*(N-1);
         var seg=Math.min(2,Math.floor(p*3));words.forEach(function(w,i){var local=p*3-i;w.style.opacity=i===seg?Math.max(0,Math.min(1,local<.5?local*2.2:(1-local)*2.2)):0;w.style.transform='translateX('+((.5-local)*30)+'vw) scale('+(1+local*.15)+')'});
         lines.forEach(function(l,i){l.classList.toggle('on',i<=seg)})}});
-      G.fromTo(cv,{scale:.8,opacity:0},{scale:1,opacity:1,duration:1.6,ease:'expo.out',delay:.5,clearProps:'transform'})})();
+      /* glide toward the scroll position instead of jumping, so the turn stays smooth at any scroll speed */
+      (function loop(){requestAnimationFrame(loop);var d=want-pos;if(Math.abs(d)<.02)return;pos+=d*.09;var f=Math.round(pos);if(f!==shown)draw(f)})()})();
   }
 
   /* =================== ARTICLE =================== */
