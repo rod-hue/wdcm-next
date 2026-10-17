@@ -31,6 +31,8 @@
       G.fromTo(s.querySelector('.ch-bg'),{yPercent:-8},{yPercent:8,ease:'none',scrollTrigger:{trigger:s,start:'top bottom',end:'bottom top',scrub:true}});
       G.fromTo(s.querySelector('.ch-giant'),{xPercent:10},{xPercent:-40,ease:'none',scrollTrigger:{trigger:s,start:'top bottom',end:'bottom top',scrub:true}});
       var lead=s.querySelector('.ch-lead-wrap');if(lead)G.fromTo(lead,{y:80,scale:.94},{y:0,scale:1,ease:'none',scrollTrigger:{trigger:s,start:'top 95%',end:'center 55%',scrub:1}});
+      var rv=s.querySelectorAll('.rv');if(rv.length)G.from(rv,{y:60,opacity:0,duration:1.1,ease:'expo.out',stagger:.08,scrollTrigger:{trigger:s.querySelector('.ch-stage'),start:'top 82%',once:true}});
+      s.querySelectorAll('[data-speed]').forEach(function(el){var sp=+el.dataset.speed;if(sp&&innerWidth>760)G.fromTo(el,{y:-sp*400},{y:sp*400,ease:'none',scrollTrigger:{trigger:s,start:'top bottom',end:'bottom top',scrub:true}})});
       G.from(s.querySelectorAll('.ch-head > *'),{y:40,opacity:0,duration:1,ease:'expo.out',stagger:.08,scrollTrigger:{trigger:s,start:'top 75%',once:true}});
       G.from(s.querySelectorAll('.ch-item'),{x:80,opacity:0,duration:1,ease:'expo.out',stagger:.1,scrollTrigger:{trigger:s.querySelector('.ch-list'),start:'top 85%',once:true}});
       ScrollTrigger.refresh()});
