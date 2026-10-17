@@ -40,8 +40,9 @@
     var withImg=ps.filter(function(p){return p.feature_image});
     renderLead(withImg[0]);
     renderWire(ps.slice(0,14));
-    var rest=withImg.filter(function(p){return p!==withImg[0]}).slice(0,4);
-    document.getElementById('rightNow').innerHTML=rest.map(function(p){return card(p,800)}).join('');
+    var rest=withImg.filter(function(p){return p!==withImg[0]}).slice(0,6);
+    var rn=document.getElementById('rightNow');rn.className='bento';
+    rn.innerHTML=rest.map(function(p,i){return '<a class="bt bt'+i+'" href="'+link(p)+'"><div class="bt-ph"><img src="'+img(p.feature_image,i?900:1600)+'" alt=""></div><div class="bt-tx"><span class="sec">'+esc(sec(p))+'</span><h3>'+esc(p.title)+'</h3><span class="ago">'+ago(p.published_at)+'</span></div></a>'}).join('');
     var today=ps.filter(function(p){return Date.now()-new Date(p.published_at)<86400e3}).length;
     document.getElementById('todayCount').textContent=today+' new stories in the last 24 hours';
     renderTicker(ps.slice(0,12));fresh();reveal();
