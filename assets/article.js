@@ -22,7 +22,11 @@
   var P=null;
   (slug?api('posts/slug/'+encodeURIComponent(slug)+'/',{include:'tags,authors',formats:'html'}):api('posts/',{limit:1,include:'tags,authors',formats:'html',filter:'tag:-dc-answers'})).then(function(d){
     P=d.posts&&d.posts[0];if(!P){document.getElementById('content').innerHTML='<p>Story not found.</p>';return}
-    render(P);
+    /* some older stories keep their full, photo-rich body in a post-fallback block on the live site; use it */
+    api('settings/',{}).then(function(s){var foot=(s&&s.settings&&s.settings.codeinjection_foot)||'';
+      if(foot.indexOf('data-slug="'+P.slug+'"')>-1){var doc=new DOMParser().parseFromString(foot,'text/html'),fb=doc.querySelector('.wdcm-post-fallback[data-slug="'+P.slug+'"]');
+        if(fb){fb.querySelectorAll('[data-wdcmfb-marker],script,style').forEach(function(e){e.remove()});if(fb.innerHTML.trim().length>200)P.html=fb.innerHTML}}
+      render(P)}).catch(function(){render(P)});
   });
 
   function render(p){
@@ -53,7 +57,10 @@
     document.getElementById('shCopy').onclick=function(){navigator.clipboard.writeText(url);this.classList.add('ok');var b=this;setTimeout(function(){b.classList.remove('ok')},1600)};
     /* audio: use the article's own voiceover if it has one, otherwise the browser voice */
     var m=(p.codeinjection_head||'').match(/name=["']wdcm-audio["'][^>]*content=["']([^"']+)/)||(p.codeinjection_head||'').match(/content=["']([^"']+\.mp3)["']/);
-    setupListen(m?m[1]:null);
+    /* older stories carry their voiceover as an in-body player: lift it into the new Listen button */
+    var oldPl=document.querySelector('#content [data-wdcm-listen], #content .wdcm-listen-v1'),oldSrc=null;
+    if(oldPl){var oa=oldPl.querySelector('audio');oldSrc=oa&&(oa.getAttribute('src')||(oa.querySelector('source')||{}).src);oldPl.remove()}
+    setupListen(m?m[1]:oldSrc);
     related(p);progress();
   }
 

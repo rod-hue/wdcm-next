@@ -105,8 +105,8 @@
       G.fromTo(card.querySelector('.pq-mark'),{scale:.4,rotate:-20,opacity:0},{scale:1,rotate:0,opacity:1,duration:1.4,ease:'expo.out',scrollTrigger:{trigger:card,start:'top 85%',once:true}})}
 
     /* CINEMATIC PAUSE: the photo returns, framed, zooming as you scroll */
-    if(ps.length>7&&hi){var pz=document.createElement('figure');pz.className='pause';
-      pz.innerHTML='<div class="pz-frame"><img src="'+hi.currentSrc.replace(/\/size\/w\d+\//,'/size/w2000/')+'" alt=""></div>'+(document.querySelector('.phero .cap')?'<figcaption class="mono">'+esc(document.querySelector('.phero .cap').textContent)+'</figcaption>':'');
+    if(ps.length>7&&hi&&(hi.currentSrc||hi.getAttribute('src'))){var pz=document.createElement('figure');pz.className='pause';
+      pz.innerHTML='<div class="pz-frame"><img src="'+(hi.currentSrc||hi.getAttribute('src')||'').replace(/\/size\/w\d+\//,'/size/w2000/')+'" alt=""></div>'+(document.querySelector('.phero .cap')?'<figcaption class="mono">'+esc(document.querySelector('.phero .cap').textContent)+'</figcaption>':'');
       ps[Math.floor(ps.length*.72)].after(pz);
       G.fromTo(pz.querySelector('.pz-frame'),{clipPath:'inset(18% 22% 18% 22% round 24px)'},{clipPath:'inset(0% 0% 0% 0% round 14px)',ease:'none',scrollTrigger:{trigger:pz,start:'top 90%',end:'center 50%',scrub:true}});
       G.fromTo(pz.querySelector('img'),{scale:1.45},{scale:1,ease:'none',scrollTrigger:{trigger:pz,start:'top bottom',end:'bottom top',scrub:true}})}
