@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="{{@site.locale}}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>{{#is "home"}}Washington DC Magazine — DC Politics, Culture, Business &amp; News{{else}}{{meta_title}}{{/is}}</title>
+<meta name="theme-color" content="#0e1830">
+{{> seo-head}}
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..700;1,8..60,400..600&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{asset "wdcm.css"}}">
+<link rel="stylesheet" href="{{asset "fx.css"}}">
+<link rel="stylesheet" href="{{asset "fx2.css"}}">
+<link rel="stylesheet" href="{{asset "theme.css"}}">
+<script>window.WDCM_LIVE=true;window.WDCM_MEDIA='https://rod-hue.github.io/wdcm-next/assets/';window.__wdcmAudio=1;</script>
+{{ghost_head}}
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1520037277986320" crossorigin="anonymous"></script>
+</head>
+<body class="{{body_class}}{{#is "home"}} home{{/is}}{{#is "post"}} post{{/is}}{{#is "page, tag, author, error"}} wd-plain{{/is}}">
+{{> cookie-consent}}
+{{{body}}}
+<!-- Google News Reader Revenue Manager -->
+<script async type="application/javascript" src="https://news.google.com/swg/js/v1/swg-basic.js"></script>
+<script>
+  (self.SWG_BASIC = self.SWG_BASIC || []).push( basicSubscriptions => {
+    basicSubscriptions.init({ type: "NewsArticle", isPartOfType: ["Product"], isPartOfProductId: "CAowj6m3DA:openaccess", clientOptions: { theme: "light", lang: "en" } });
+  });
+</script>
+{{ghost_foot}}
+</body>
+</html>

@@ -1,0 +1,18 @@
+{{!< default}}
+{{> header}}
+{{#post}}
+<main class="wd-page" id="wdPage">
+  {{#match @page.show_title_and_feature_image}}
+  <header class="wd-hero">
+    <span class="mono gold-txt">Washington DC Magazine</span>
+    <h1>{{title}}</h1>
+    {{#if custom_excerpt}}<p class="wd-dek">{{custom_excerpt}}</p>{{/if}}
+  </header>
+  {{/match}}
+  <div class="wd-body">
+    <div class="gh-content page-content" id="wdcm-page-body">{{content}}</div>
+  </div>
+</main>
+{{/post}}
+{{> footer}}
+<script src="{{asset "theme.js"}}"></script>

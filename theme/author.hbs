@@ -1,0 +1,27 @@
+{{!< default}}
+{{> header}}
+<main class="wd-list">
+  {{#author}}
+  <header class="wd-hero">
+    {{#if profile_image}}<img class="wd-av" src="{{img_url profile_image size="s"}}" alt="{{name}}">{{/if}}<span class="mono gold-txt">Contributor</span>
+    <h1>{{name}}</h1>
+    {{#if bio}}<p class="wd-dek">{{bio}}</p>{{/if}}
+  </header>
+  {{/author}}
+  <div class="wd-grid">
+    {{#foreach posts}}
+    <a class="wd-card{{#if @first}} wd-first{{/if}}" href="{{url}}">
+      {{#if feature_image}}<div class="wd-ph"><img src="{{img_url feature_image size="m"}}" srcset="{{img_url feature_image size="s"}} 400w, {{img_url feature_image size="m"}} 800w, {{img_url feature_image size="l"}} 1200w" sizes="(max-width:700px) 100vw, 33vw" alt="{{title}}" loading="lazy"></div>{{/if}}
+      <div class="wd-tx">
+        {{#primary_tag}}<span class="mono gold-txt">{{name}}</span>{{/primary_tag}}
+        <h2>{{title}}</h2>
+        {{#if custom_excerpt}}<p>{{custom_excerpt}}</p>{{/if}}
+        <span class="mono muted">{{date format="MMM D, YYYY"}} &middot; {{reading_time}}</span>
+      </div>
+    </a>
+    {{/foreach}}
+  </div>
+  {{pagination}}
+</main>
+{{> footer}}
+<script src="{{asset "theme.js"}}"></script>

@@ -18,7 +18,7 @@
   function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
   function ago(d){var s=(Date.now()-new Date(d))/1000;if(s<60)return 'Just now';if(s<3600)return Math.floor(s/60)+' min ago';if(s<86400)return Math.floor(s/3600)+' hr ago';var n=Math.floor(s/86400);return n===1?'Yesterday':n+' days ago'}
   function clock(d){return new Date(d).toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',timeZone:'America/New_York'})}
-  function link(p){return 'article.html?s='+encodeURIComponent(p.slug)}
+  function link(p){return window.WDCM_LIVE?'/'+p.slug+'/':'article.html?s='+encodeURIComponent(p.slug)}
   function sec(p){return p.primary_tag?p.primary_tag.name:'News'}
   function isNew(p){return Date.now()-new Date(p.published_at)<6*3600e3}
   function card(p,w){return '<a class="card'+(isNew(p)?' new':'')+'" href="'+link(p)+'"><div class="ph">'+(p.feature_image?'<img loading="lazy" src="'+img(p.feature_image,w||800)+'" alt="">':'')+'</div><div class="tx"><span class="sec">'+esc(sec(p))+'</span><h3>'+esc(p.title)+'</h3><span class="ago">'+ago(p.published_at)+' &middot; '+(p.reading_time||1)+' min read</span></div></a>'}
@@ -137,7 +137,7 @@
   /* rooms: cinematic channels */
   var rooms=document.getElementById('rooms');
   ROOMS.forEach(function(r,ri){var s=document.createElement('section');s.className='room ch lay-'+r.lay;s.id='room-'+r.slug;
-    s.innerHTML='<div class="ch-bg"><video muted loop playsinline preload="none" poster="assets/film/'+r.film+'.jpg" data-q="assets/film/'+r.film+'"></video></div>'+
+    s.innerHTML='<div class="ch-bg"><video muted loop playsinline preload="none" poster="'+(window.WDCM_MEDIA||'assets/')+'film/'+r.film+'.jpg" data-q="'+(window.WDCM_MEDIA||'assets/')+'film/'+r.film+'"></video></div>'+
       '<div class="ch-giant" aria-hidden="true">'+esc(r.t.replace(' & ',' & '))+'</div>'+
       '<div class="ch-in"><header class="ch-head"><span class="mono gold-txt">'+String(ri+1).padStart(2,'0')+' / Channel</span><h2>'+esc(r.t).replace('&amp;','<em>&amp;</em>')+'</h2><p>'+esc(r.k)+'</p><a class="ch-all mono" href="'+LIVE+'/tag/'+r.slug+'/">All '+esc(r.t)+' <span>&rarr;</span></a></header>'+
       '<div class="ch-stage"><div class="ch-lead-wrap"></div><div class="ch-list"></div></div></div>';rooms.appendChild(s);

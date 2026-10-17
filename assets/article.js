@@ -7,18 +7,18 @@
   function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
   function ago(d){var s=(Date.now()-new Date(d))/1000;if(s<3600)return Math.max(1,Math.floor(s/60))+' min ago';if(s<86400)return Math.floor(s/3600)+' hr ago';var n=Math.floor(s/86400);return n===1?'Yesterday':n+' days ago'}
   function dt(d){return new Date(d).toLocaleString('en-US',{month:'long',day:'numeric',year:'numeric',hour:'numeric',minute:'2-digit',timeZone:'America/New_York'})+' ET'}
-  function link(p){return 'article.html?s='+encodeURIComponent(p.slug)}
+  function link(p){return window.WDCM_LIVE?'/'+p.slug+'/':'article.html?s='+encodeURIComponent(p.slug)}
   function card(p){return '<a class="card" href="'+link(p)+'"><div class="ph">'+(p.feature_image?'<img loading="lazy" src="'+img(p.feature_image,800)+'" alt="">':'')+'</div><div class="tx"><span class="sec">'+esc(p.primary_tag?p.primary_tag.name:'News')+'</span><h3>'+esc(p.title)+'</h3><span class="ago">'+ago(p.published_at)+'</span></div></a>'}
 
   /* clock + nav shared with home */
   var NAV=[['Politics','politics'],['National','national-news'],['Sports','dc-sports'],['Business','business'],['Culture','culture'],['Food & Drink','food-drink'],['DC Answers','dc-answers']];
-  var nav=document.getElementById('sectionsNav');if(nav)nav.innerHTML=NAV.map(function(n){return '<a href="./#room-'+n[1]+'">'+n[0]+'</a>'}).join('');
+  var nav=document.getElementById('sectionsNav');if(nav)nav.innerHTML=NAV.map(function(n){return '<a href="'+(window.WDCM_LIVE?'/tag/'+n[1]+'/':'./#room-'+n[1])+'">'+n[0]+'</a>'}).join('');
   function tick(){var el=document.getElementById('sysClock');if(el)el.textContent='Washington, DC  '+new Date().toLocaleString('en-US',{weekday:'short',month:'short',day:'numeric',hour:'numeric',minute:'2-digit',timeZone:'America/New_York'})}tick();setInterval(tick,15000);
   fetch('https://api.open-meteo.com/v1/forecast?latitude=38.9072&longitude=-77.0369&current=temperature_2m&temperature_unit=fahrenheit').then(function(r){return r.json()}).then(function(d){document.getElementById('sysWeather').textContent=Math.round(d.current.temperature_2m)+'°F'}).catch(function(){});
   api('posts/',{limit:12,fields:'title,slug,published_at',filter:'tag:-dc-answers'}).then(function(d){var t=(d.posts||[]).map(function(p){return '<a href="'+link(p)+'"><b>'+new Date(p.published_at).toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',timeZone:'America/New_York'})+'</b>'+esc(p.title)+'</a>'}).join('');document.getElementById('ticker').innerHTML=t+t;if(d.posts&&d.posts[0])document.getElementById('sysFresh').textContent='Updated '+ago(d.posts[0].published_at).toLowerCase()});
   var mast=document.getElementById('mast');
 
-  var slug=new URLSearchParams(location.search).get('s');
+  var slug=new URLSearchParams(location.search).get('s')||window.WDCM_SLUG;
   var P=null;
   (slug?api('posts/slug/'+encodeURIComponent(slug)+'/',{include:'tags,authors',formats:'html'}):api('posts/',{limit:1,include:'tags,authors',formats:'html',filter:'tag:-dc-answers'})).then(function(d){
     P=d.posts&&d.posts[0];if(!P){document.getElementById('content').innerHTML='<p>Story not found.</p>';return}

@@ -1,0 +1,12 @@
+{{!< default}}
+{{> header}}
+<main class="wd-page wd-err">
+  <header class="wd-hero">
+    <span class="mono gold-txt">Error {{statusCode}}</span>
+    <h1>{{#if message}}{{message}}{{else}}Page not found{{/if}}</h1>
+    <p class="wd-dek">The story you were looking for may have moved. Try the homepage or search.</p>
+    <p><a class="sub-btn gold big" href="{{@site.url}}/">Back to the front page &rarr;</a></p>
+  </header>
+</main>
+{{> footer}}
+<script src="{{asset "theme.js"}}"></script>

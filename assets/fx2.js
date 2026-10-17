@@ -43,7 +43,7 @@
     mo.observe(document.body,{childList:true,subtree:true});
 
     /* THE DOME: the sculpture turns with your scroll; words pass behind it */
-    (function(){var cv=document.getElementById('domeCv');if(!cv)return;var N=120,mob=innerWidth<760,dir='assets/seq/'+(mob?'dome-m':'dome')+'/',x=cv.getContext('2d'),imgs=[],cur=0;
+    (function(){var cv=document.getElementById('domeCv');if(!cv)return;var N=120,mob=innerWidth<760,dir=(window.WDCM_MEDIA||'assets/')+'seq/'+(mob?'dome-m':'dome')+'/',x=cv.getContext('2d'),imgs=[],cur=0;
       cv.width=mob?640:1080;cv.height=cv.width;
       function draw(i){for(var k=0;k<N;k++){var im=imgs[i-k]&&imgs[i-k].ok?imgs[i-k]:imgs[i+k]&&imgs[i+k].ok?imgs[i+k]:null;if(im){x.clearRect(0,0,cv.width,cv.height);x.drawImage(im,(cv.width-im.naturalWidth*cv.height/im.naturalHeight)/2,0,im.naturalWidth*cv.height/im.naturalHeight,cv.height);return}}}
       var started=false;function load(){if(started)return;started=true;var order=[];[8,4,2,1].forEach(function(s){for(var i=0;i<N;i+=s)if(order.indexOf(i)<0)order.push(i)});
