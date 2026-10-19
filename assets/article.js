@@ -66,8 +66,8 @@
 
   function related(p){
     var f=p.primary_tag?'primary_tag:'+p.primary_tag.slug+'+id:-'+p.id:'id:-'+p.id;
-    document.getElementById('relSec').textContent=p.primary_tag?p.primary_tag.name:'WDCM';
-    api('posts/',{limit:4,filter:f+'+feature_image:-null',fields:'id,title,slug,published_at,feature_image,primary_tag',include:'tags'}).then(function(d){document.getElementById('related').innerHTML=(d.posts||[]).map(card).join('')});
+    if(!document.querySelector('#related .card'))document.getElementById('relSec').textContent=p.primary_tag?p.primary_tag.name:'WDCM';
+    if(!document.querySelector('#related .card'))api('posts/',{limit:4,filter:f+'+feature_image:-null',fields:'id,title,slug,published_at,feature_image,primary_tag',include:'tags'}).then(function(d){document.getElementById('related').innerHTML=(d.posts||[]).map(card).join('')});
     api('posts/',{limit:1,filter:'id:-'+p.id+'+tag:-dc-answers+feature_image:-null+published_at:<\''+p.published_at+'\'',fields:'title,slug,feature_image,custom_excerpt,primary_tag,published_at',include:'tags'}).then(function(d){var n=d.posts&&d.posts[0];if(!n)return;
       document.getElementById('upnext').innerHTML='<a href="'+link(n)+'" class="un"><div class="bg"><img loading="lazy" src="'+img(n.feature_image,2000)+'" alt=""></div><div class="un-copy"><span class="mono gold-txt">Up next</span><h2>'+esc(n.title)+'</h2><p>'+esc(n.custom_excerpt||'')+'</p></div></a>'});
   }

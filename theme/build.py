@@ -9,7 +9,7 @@ T = os.path.join(ROOT, 'theme')
 OUT = os.path.join(T, 'dist', 'wdcm2')
 LEGACY = os.environ.get('WDCM_LEGACY', '')          # unpacked live wdcm theme, for legacy templates
 MEDIA = 'https://rod-hue.github.io/wdcm-next/assets/'
-VERSION = '2.0.3'
+VERSION = '2.0.4'
 
 def read(p): return open(p, encoding='utf-8').read()
 def write(p, s):
@@ -73,6 +73,16 @@ post = post.replace('<header class="phero" id="phero"><div class="sk sk-lead"></
     '<header class="phero" id="phero"><div class="ph-copy">{{#primary_tag}}<a class="tagpill" href="{{url}}">{{name}}</a>{{/primary_tag}}<h1>{{title}}</h1>{{#if custom_excerpt}}<p class="dek">{{custom_excerpt}}</p>{{/if}}</div></header>')
 assert '<div class="gh-content" id="content"></div>' in post
 post = post.replace('<div class="gh-content" id="content"></div>', '<div class="gh-content" id="content">{{content}}</div>')
+# server-rendered related + latest links so crawlers see internal links without running JS
+CARD = '<a class="card" href="{{url}}"><div class="ph">{{#if feature_image}}<img loading="lazy" src="{{img_url feature_image size=\"m\"}}" alt="{{title}}">{{/if}}</div><div class="tx"><span class="sec">{{#primary_tag}}{{name}}{{/primary_tag}}</span><h3>{{title}}</h3><span class="ago">{{date published_at format=\"MMM D, YYYY\"}}</span></div></a>'
+REL = ('<div class="grid4" id="related">{{#if primary_tag}}{{#get "posts" filter="primary_tag:{{primary_tag.slug}}+id:-{{id}}+feature_image:-null" limit="4" include="tags" as |rel|}}{{#foreach rel}}' + CARD +
+       '{{/foreach}}{{/get}}{{else}}{{#get "posts" filter="id:-{{id}}+feature_image:-null" limit="4" include="tags" as |rel|}}{{#foreach rel}}' + CARD + '{{/foreach}}{{/get}}{{/if}}</div>')
+assert '<div class="grid4" id="related"></div>' in post
+post = post.replace('<div class="grid4" id="related"></div>', REL)
+post = post.replace('More from <span id="relSec">WDCM</span>', 'More from <span id="relSec">{{#if primary_tag}}{{primary_tag.name}}{{else}}WDCM{{/if}}</span>')
+LATEST = ('<section class="band latest-links"><div class="band-head"><h2 class="kicker"><span class="star"></span>Latest from Washington DC Magazine</h2></div><ul class="latest-list">'
+          '{{#get "posts" filter="id:-{{id}}" limit="8" as |lat|}}{{#foreach lat}}<li><a href="{{url}}">{{title}}</a><span class="mono muted">{{date published_at format=\"MMM D\"}}</span></li>{{/foreach}}{{/get}}</ul></section>')
+post = post.replace('<section class="band related">', LATEST + '<section class="band related">', 1)
 schema = read(os.path.join(T, 'post-schema.hbs'))
 write(os.path.join(OUT, 'post.hbs'), '{{!< default}}\n{{#post}}\n' + schema + '<script>window.WDCM_SLUG="{{slug}}";</script>\n' + post + '{{/post}}\n' +
       scripts(['article.js', 'fx.js', 'faces.js', 'fx2.js', 'theme.js']))

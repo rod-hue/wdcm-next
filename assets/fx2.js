@@ -78,26 +78,6 @@
 
     var text=c.innerText||'', ps=[].slice.call(c.querySelectorAll(':scope > p'));
 
-    /* BY THE NUMBERS: auto-extracted stats in animated boxes */
-    var stats=[],seen={},cand=[],re=/(\$?\d[\d,]*(?:\.\d+)?)(\s?(?:%|percent|million|billion|thousand|-[a-z]+))?\s+((?:[a-z][a-z-]*\s?){1,3})/g,m;
-    while((m=re.exec(text))){var raw=m[1];if(/[,.]$/.test(raw))continue;var num=parseFloat(raw.replace(/[$,]/g,''));if(isNaN(num))continue;
-      var tail=(m[2]||'').trim(),words=((tail.replace(/^-/,'')+' '+m[3]).trim()).split(/\s+/);
-      if(STOP[words[0]]&&!/^(per)$/.test(words[0]))continue;
-      if(!raw.startsWith('$')&&num>=1900&&num<=2100&&raw.indexOf(',')<0)continue;
-      if(!raw.startsWith('$')&&!/%|percent|million|billion/.test(tail)&&num<5)continue;
-      while(words.length&&STOP[words[words.length-1]])words.pop();words=words.slice(0,3);if(!words.length)continue;
-      var unit=/%|percent/.test(tail)?'%':/million/.test(tail)?'M':/billion/.test(tail)?'B':'';var label=words.join(' ').replace(/^(percent|million|billion)\s*/,'');if(!label||seen[label])continue;seen[label]=1;
-      var score=(raw.startsWith('$')?5:0)+(unit?4:0)+(raw.indexOf(',')>-1?3:0)+(/-/.test(tail)?2:0)+Math.min(2,Math.log10(num+1)/2);
-      cand.push({pre:raw.startsWith('$')?'$':'',n:num,dec:(raw.split('.')[1]||'').length,unit:unit,label:label,score:score,pos:m.index})}
-    stats=cand.sort(function(a,b){return b.score-a.score}).slice(0,4).sort(function(a,b){return a.pos-b.pos});
-    if(stats.length>=2){var box=document.createElement('aside');box.className='numbers';
-      box.innerHTML='<div class="nb-head"><span class="mono gold-txt">By the numbers</span><i></i></div><div class="nb-grid">'+stats.map(function(s){return '<div class="statbox"><b><small>'+s.pre+'</small><span data-v="'+s.n+'" data-d="'+s.dec+'">0</span><small>'+s.unit+'</small></b><span>'+esc(s.label)+'</span><i class="bar"></i></div>'}).join('')+'</div>';
-      var at=ps[Math.min(2,ps.length-1)];if(at)at.after(box);
-      box.querySelectorAll('[data-v]').forEach(function(el){var o={v:0},v=+el.dataset.v,d=+el.dataset.d;ScrollTrigger.create({trigger:el,start:'top 88%',once:true,onEnter:function(){G.to(o,{v:v,duration:2,ease:'power3.out',onUpdate:function(){el.textContent=o.v.toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d})}})}})});
-      G.fromTo(box.querySelector('.nb-head i'),{scaleX:0},{scaleX:1,duration:1.4,ease:'expo.out',scrollTrigger:{trigger:box,start:'top 85%',once:true}});
-      boxIn('.statbox',box);
-      box.querySelectorAll('.bar').forEach(function(b,i){G.fromTo(b,{scaleX:0},{scaleX:.35+.65*(1-i/stats.length),duration:2,ease:'power3.out',scrollTrigger:{trigger:b,start:'top 90%',once:true}})})}
-
     /* PULL QUOTE: the strongest quote becomes a motion card */
     var qs=(text.match(/["“]([^"”]{60,230})["”]/g)||[]).map(function(q){return q.slice(1,-1).replace(/,\s*$/,'.')});
     if(qs.length&&ps.length>5){var q=qs[0],card=document.createElement('figure');card.className='pq';

@@ -301,3 +301,10 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .studio-x{position:absolute;top:10px;right:14px;font-size:30px;color:#aab0bd}
 @media (max-width:820px){.studio-box{grid-template-columns:1fr;overflow:auto}.studio-prev canvas{max-width:100%;max-height:52svh;margin:0 auto}}
 @media (max-width:560px){.mast{gap:10px;padding:12px 14px}.brand .logo{height:26px}.mast.slim .brand .logo{height:24px}.mast-actions{gap:6px}.icon-btn{width:36px;height:36px}.mast .sub-btn{padding:9px 12px;font-size:12.5px}.sys-right{display:none}}
+/* latest links under articles (server-rendered for crawlers) */
+.latest-links{padding-bottom:clamp(30px,4vw,56px)}
+.latest-list{list-style:none;margin:0;padding:0;columns:2 340px;column-gap:40px}
+.latest-list li{break-inside:avoid;display:flex;justify-content:space-between;gap:16px;align-items:baseline;padding:12px 0;border-bottom:1px solid var(--line)}
+.latest-list a{font-family:var(--serif);font-weight:600;font-size:18px;line-height:1.3;color:var(--ink);text-decoration:none}
+.latest-list a:hover{color:var(--navy);text-decoration:underline;text-decoration-color:var(--gold);text-underline-offset:3px}
+.latest-list .mono{white-space:nowrap;font-size:10px}
