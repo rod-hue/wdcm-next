@@ -2,12 +2,20 @@
 {{> header}}
 <main class="wd-list">
   {{#author}}
-  <header class="wd-hero">
-    {{#if profile_image}}<img class="wd-av" src="{{img_url profile_image size="s"}}" alt="{{name}}">{{/if}}<span class="mono gold-txt">Contributor</span>
-    <h1>{{name}}</h1>
-    {{#if bio}}<p class="wd-dek">{{bio}}</p>{{/if}}
+  <header class="wd-hero wd-author">
+    {{#if profile_image}}<img class="wd-av" src="{{img_url profile_image size="m"}}" alt="{{name}}">{{/if}}
+    <div class="wd-auth-meta">
+      <span class="mono gold-txt">{{#has slug="rod"}}Editor in Chief{{else}}{{#has slug="morganne"}}Managing Editor{{else}}Contributor{{/has}}{{/has}}</span>
+      <h1>{{name}}</h1>
+      {{#if bio}}<p class="wd-dek">{{bio}}</p>{{/if}}
+      {{#if location}}
+      <div class="wd-auth-links mono"><span>{{location}}</span>{{#if website}}<span class="wd-dot">&middot;</span><a href="{{website}}" rel="noopener nofollow" target="_blank">Website</a>{{/if}}</div>
+      {{else}}{{#if website}}<div class="wd-auth-links mono"><a href="{{website}}" rel="noopener nofollow" target="_blank">Website</a></div>{{/if}}{{/if}}
+      {{#has slug="rod"}}<p class="wd-dek" style="font-size:17px;margin-top:6px">Rodriquez Wright II founded Washington DC Magazine and edits it as editor in chief, interviewing the artists, authors, entrepreneurs and public figures shaping the capital region. He is also the founder of Leo Operations, a campaign and media firm that has run field and digital programs in more than a dozen states, and he records music as Rod212.</p><div class="wd-auth-links mono"><a href="https://rodriquezwright.com/" rel="me noopener" target="_blank">rodriquezwright.com</a><span class="wd-dot">&middot;</span><a href="https://leooperations.com/team/rodriquez-wright-ii/" rel="me noopener" target="_blank">Leo Operations</a><span class="wd-dot">&middot;</span><a href="https://www.instagram.com/rod212" rel="me noopener" target="_blank">Instagram</a><span class="wd-dot">&middot;</span><a href="https://www.linkedin.com/in/rodriquez-wright-ii-62523049" rel="me noopener" target="_blank">LinkedIn</a></div><a class="wd-fullbio mono" href="/editorial-team/">Read full bio &rarr;</a>{{/has}}{{#has slug="nicole-ford"}}<a class="wd-fullbio mono" href="/nicole-ford/">Read full bio &rarr;</a>{{/has}}
+    </div>
   </header>
   {{/author}}
+  <div class="wd-grid-head"><span class="mono gold-txt">Stories</span></div>
   <div class="wd-grid">
     {{#foreach posts}}
     <a class="wd-card{{#if @first}} wd-first{{/if}}" href="{{url}}">

@@ -20,11 +20,12 @@
       "url": "https://washingtondcmagazine.com/images/logo.png"
     }
   },
-  "author": {
+  "author": {{#primary_author}}{{#has slug="rod"}}{"@type": "Person", "@id": "https://rodriquezwright.com/#person", "name": "Rodriquez Wright II", "jobTitle": "Editor in Chief", "url": "https://www.washingtondcmagazine.com/author/rod/", "sameAs": ["https://rodriquezwright.com/", "https://leooperations.com/team/rodriquez-wright-ii/", "https://www.instagram.com/rod212", "https://www.linkedin.com/in/rodriquez-wright-ii-62523049"]}{{else}}{
     "@type": "Person",
-    "name": "{{#primary_author}}{{name}}{{else}}Washington DC Magazine{{/primary_author}}"{{#primary_author}},
-    "url": "https://washingtondcmagazine.com/author/{{slug}}/"{{/primary_author}}
-  },
+    "name": "{{name}}",
+    "url": "https://www.washingtondcmagazine.com/author/{{slug}}/"
+  }{{/has}}{{else}}{"@type": "Organization", "name": "Washington DC Magazine"}{{/primary_author}},
+  "editor": {"@type": "Person", "@id": "https://rodriquezwright.com/#person", "name": "Rodriquez Wright II", "jobTitle": "Editor in Chief", "url": "https://www.washingtondcmagazine.com/author/rod/", "sameAs": ["https://rodriquezwright.com/", "https://leooperations.com/team/rodriquez-wright-ii/", "https://www.instagram.com/rod212", "https://www.linkedin.com/in/rodriquez-wright-ii-62523049"]},
   "description": "{{#if custom_excerpt}}{{custom_excerpt}}{{else}}{{meta_description}}{{/if}}"
 }
 </script>

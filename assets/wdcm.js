@@ -11,7 +11,7 @@
     {t:'Culture',k:'Music, film and the national conversation',f:'tag:[pop-culture,culture,music,arts-culture]',slug:'culture',lay:'gallery',film:'culture'},
     {t:'Food & Drink',k:'Where the capital eats now',f:'tag:food-drink',slug:'food-drink',lay:'menu',film:'food'}
   ];
-  var NAV=[['National','national-news'],['Politics','politics'],['Sports','dc-sports'],['Business','business'],['Culture','culture'],['Food & Drink','food-drink'],['DC Answers','dc-answers']];
+  var NAV=[['National','national-news'],['Politics','politics'],['Sports','dc-sports'],['Business','business'],['Culture','culture'],['Food & Drink','food-drink'],['DC Answers','dc-answers'],['Team','team',null,[['Editors','/editors/'],['Contributors','/contributors/'],['Special Contributors','/special-contributors/']]]];
 
   function api(res,params){var u=new URL(API+res+'/');u.searchParams.set('key',KEY);for(var k in params)u.searchParams.set(k,params[k]);return fetch(u).then(function(r){return r.json()})}
   function img(u,w){if(!u)return '';if(u.indexOf('/content/images/')>-1&&u.indexOf('/size/')<0)return u.replace('/content/images/','/content/images/size/w'+w+'/');return u}
@@ -26,7 +26,7 @@
 
   /* nav */
   var nav=document.getElementById('sectionsNav');
-  if(nav)nav.innerHTML=NAV.map(function(n){return '<a href="#room-'+n[1]+'">'+n[0]+'</a>'}).join('');
+  if(nav)nav.innerHTML=NAV.map(function(n){if(n[3]){return '<div class="nav-dd"><a href="'+n[3][0][1]+'">'+n[0]+'</a><div class="nav-dd-menu">'+n[3].map(function(s){return '<a href="'+s[1]+'">'+s[0]+'</a>'}).join('')+'</div></div>'}return '<a href="'+(n[2]||'#room-'+n[1])+'">'+n[0]+'</a>'}).join('');
 
   /* clock + weather */
   function tick(){var el=document.getElementById('sysClock');if(el)el.textContent='Washington, DC  '+new Date().toLocaleString('en-US',{weekday:'short',month:'short',day:'numeric',hour:'numeric',minute:'2-digit',timeZone:'America/New_York'})}
@@ -132,7 +132,7 @@
       st.innerHTML=ps.slice(0,6).map(function(q,i){return '<a class="gl-piece rv g'+i+'" href="'+link(q)+'" data-speed="'+[.0,-.12,.08,-.06,.14,-.1][i]+'"><div class="gl-frame"><img src="'+img(q.feature_image,i?900:1500)+'" alt="" loading="lazy"></div><div class="gl-label"><span class="mono">'+esc(sec(q))+' &middot; '+ago(q.published_at)+'</span><h4>'+esc(q.title)+'</h4></div></a>'}).join('')},
     /* FOOD & DRINK: tonight's menu, a printed card with plated stories */
     menu:function(s,ps){var st=s.querySelector('.ch-stage');st.className='ch-stage mn';var d=new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
-      st.innerHTML='<div class="mn-card rv"><div class="mn-top"><span class="mono">'+esc(d)+'</span><h3>Tonight&rsquo;s <em>Menu</em></h3><span class="mn-orn">&#10022; &#10022; &#10022;</span></div><div class="mn-items">'+ps.slice(0,6).map(function(q,i){return '<a class="mn-item" href="'+link(q)+'"><span class="mn-plate"><img src="'+img(q.feature_image,400)+'" alt="" loading="lazy"></span><span class="mn-body"><span class="mn-line"><h4>'+esc(q.title)+'</h4><i></i><b>'+(q.reading_time||1)+' min</b></span><span class="mn-desc">'+ex(q,110)+'</span></span></a>'}).join('')+'</div><div class="mn-foot mono">Served fresh daily by the WDCM kitchen</div></div>'}
+      st.innerHTML='<div class="mn-card rv"><div class="mn-top"><span class="mono">'+esc(d)+'</span><h3>Tonight&rsquo;s <em>Menu</em></h3><span class="mn-orn">&#10022; &#10022; &#10022;</span></div><div class="mn-items">'+ps.slice(0,6).map(function(q,i){return '<a class="mn-item" href="'+link(q)+'"><span class="mn-plate"><img src="'+img(q.feature_image,400)+'" alt="" loading="lazy"></span><span class="mn-body"><span class="mn-line"><h4>'+esc(q.title)+'</h4></span><span class="mn-desc">'+ex(q,110)+'</span></span></a>'}).join('')+'</div><div class="mn-foot mono">Served fresh daily by the WDCM kitchen</div></div>'}
   };
   /* rooms: cinematic channels */
   var rooms=document.getElementById('rooms');

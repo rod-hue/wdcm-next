@@ -9,7 +9,7 @@ T = os.path.join(ROOT, 'theme')
 OUT = os.path.join(T, 'dist', 'wdcm2')
 LEGACY = os.environ.get('WDCM_LEGACY', '')          # unpacked live wdcm theme, for legacy templates
 MEDIA = 'https://rod-hue.github.io/wdcm-next/assets/'
-VERSION = '2.0.4'
+VERSION = '2.1.2'
 
 def read(p): return open(p, encoding='utf-8').read()
 def write(p, s):
@@ -83,6 +83,10 @@ post = post.replace('More from <span id="relSec">WDCM</span>', 'More from <span 
 LATEST = ('<section class="band latest-links"><div class="band-head"><h2 class="kicker"><span class="star"></span>Latest from Washington DC Magazine</h2></div><ul class="latest-list">'
           '{{#get "posts" filter="id:-{{id}}" limit="8" as |lat|}}{{#foreach lat}}<li><a href="{{url}}">{{title}}</a><span class="mono muted">{{date published_at format=\"MMM D\"}}</span></li>{{/foreach}}{{/get}}</ul></section>')
 post = post.replace('<section class="band related">', LATEST + '<section class="band related">', 1)
+# server-rendered byline so crawlers see the author (and the Editor in Chief credit) without JS
+BYLINE = '<div class="byline-card" id="authorCard">{{#primary_author}}<span class="av">{{#if profile_image}}<img src="{{img_url profile_image size="xs"}}" alt="{{name}}">{{else}}{{name}}{{/if}}</span><div><span class="mono gold-txt">Written by</span><b><a href="{{url}}" rel="author" style="color:inherit">{{name}}</a></b><p>{{#if bio}}{{bio}}{{else}}Reporting from the nation&rsquo;s capital for Washington DC Magazine.{{/if}}</p>{{#has slug="rod"}}{{else}}<p class="mono muted" style="margin-top:10px;font-size:12px;letter-spacing:.08em">EDITOR IN CHIEF: <a href="/author/rod/" style="color:inherit;text-decoration:underline">RODRIQUEZ WRIGHT II</a></p>{{/has}}</div>{{/primary_author}}</div>'
+assert '<div class="byline-card" id="authorCard"></div>' in post
+post = post.replace('<div class="byline-card" id="authorCard"></div>', BYLINE)
 schema = read(os.path.join(T, 'post-schema.hbs'))
 write(os.path.join(OUT, 'post.hbs'), '{{!< default}}\n{{#post}}\n' + schema + '<script>window.WDCM_SLUG="{{slug}}";</script>\n' + post + '{{/post}}\n' +
       scripts(['article.js', 'fx.js', 'faces.js', 'fx2.js', 'theme.js']))
