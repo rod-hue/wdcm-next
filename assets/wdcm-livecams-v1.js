@@ -137,10 +137,38 @@
     (document.querySelector("main") || document.body).appendChild(sec);
   }
 
+  /* ---------- masthead nav link (injected once the theme builds the nav) ---------- */
+  function addNav() {
+    var nav = document.getElementById("sectionsNav");
+    if (!nav || !nav.children.length) return false;        // wait until the theme has built it
+    if (nav.querySelector("[data-lc-nav]")) return true;   // already added
+    if (!document.getElementById("lc-nav-css")) {
+      var st = document.createElement("style");
+      st.id = "lc-nav-css";
+      st.textContent = "#sectionsNav a[data-lc-nav]{display:inline-flex;align-items:center;gap:6px}" +
+        "#sectionsNav a[data-lc-nav] i{width:7px;height:7px;border-radius:50%;background:#e23;animation:lcpulse 1.6s infinite}";
+      document.head.appendChild(st);
+    }
+    var a = document.createElement("a");
+    a.href = "/live/"; a.setAttribute("data-lc-nav", "1");
+    a.innerHTML = '<i></i>Live';
+    if (location.pathname.replace(/\/+$/, "") === "/live") a.setAttribute("aria-current", "page");
+    var dd = nav.querySelector(".nav-dd");
+    if (dd) nav.insertBefore(a, dd); else nav.appendChild(a);
+    return true;
+  }
+  function navLoop() {
+    injectCSS();                 // ensure lcpulse keyframe exists for the nav dot
+    if (addNav()) return;
+    var n = 0, t = setInterval(function () { if (addNav() || ++n > 20) clearInterval(t); }, 250);
+  }
+
   function go() {
     var p = location.pathname.replace(/\/+$/, "");
     if (p === "/live") buildPage();
     else if (p === "") buildBand();
+    if (document.readyState === "complete") navLoop();
+    else window.addEventListener("load", navLoop);
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", go);
   else go();
