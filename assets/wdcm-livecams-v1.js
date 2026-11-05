@@ -91,7 +91,7 @@
   /* ---------- full page at /live/ ---------- */
   function buildPage() {
     if (document.getElementById("wdcm-live")) return;
-    var mount = document.getElementById("wdcm-live-mount") || document.getElementById("wdcm-page-body");
+    var mount = document.getElementById("wdcm-page-body") || document.getElementById("wdcm-live-mount");
     if (!mount) return;
     injectCSS();
     var wrap = document.createElement("div");
@@ -105,8 +105,8 @@
     note.innerHTML = "Live feeds from EarthCam and Windy.com, refreshed in real time. " +
       "Views can pause or go dark when a camera is down for maintenance. There is no public close-up of the White House grounds for security reasons.";
     wrap.appendChild(note);
-    if (mount.id === "wdcm-live-mount") mount.appendChild(wrap);
-    else mount.innerHTML = "", mount.appendChild(wrap);
+    mount.innerHTML = "";
+    mount.appendChild(wrap);
   }
 
   /* ---------- homepage teaser band ---------- */
