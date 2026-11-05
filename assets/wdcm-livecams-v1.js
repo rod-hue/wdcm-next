@@ -14,7 +14,7 @@
       credit: "EarthCam", url: "https://www.earthcam.com/usa/dc/washingtonmonument/?cam=wamo" },
     { t: "youtube", id: "5p_KGD4fJZs", title: "The White House",
       loc: "1600 Pennsylvania Avenue, right now",
-      credit: "earthTV", url: "https://www.youtube.com/watch?v=5p_KGD4fJZs" },
+      credit: "earthTV", url: "https://www.youtube.com/watch?v=5p_KGD4fJZs", recover: "wh" },
     { t: "windy", id: "1263154384", title: "The U.S. Capitol",
       loc: "Capitol Hill, updating through the day",
       credit: "Windy.com", url: "https://www.windy.com/webcams/1263154384" },
@@ -22,6 +22,9 @@
       loc: "Across the Potomac toward the memorials",
       credit: "Windy.com", url: "https://www.windy.com/webcams/1793908140" }
   ];
+
+  // earthTV rotates the White House live id; this resolver returns the current one
+  var WH_RESOLVER = "https://wh-live.rod-558.workers.dev/";
 
   function src(c) {
     return c.t === "youtube"
@@ -34,6 +37,7 @@
   function tile(c, lazy) {
     var d = document.createElement("div");
     d.className = "lc-tile";
+    if (c.recover) d.setAttribute("data-cam", c.recover);
     d.innerHTML =
       '<div class="lc-fr">' +
         '<span class="lc-live"><i></i> LIVE</span>' +
@@ -107,6 +111,22 @@
     wrap.appendChild(note);
     mount.innerHTML = "";
     mount.appendChild(wrap);
+    recoverWH();
+  }
+
+  // Swap the White House iframe to the channel's current live id if it has rotated.
+  // Purely additive: the tile renders immediately with the known-good id, and this
+  // only replaces the src when the resolver returns a different, resolved id.
+  function recoverWH() {
+    var cam = null;
+    for (var i = 0; i < CAMS.length; i++) if (CAMS[i].recover === "wh") cam = CAMS[i];
+    if (!cam) return;
+    fetch(WH_RESOLVER).then(function (r) { return r.json(); }).then(function (j) {
+      if (j && j.resolved && j.id && j.id !== cam.id) {
+        var fr = document.querySelector('#wdcm-live [data-cam="wh"] iframe');
+        if (fr) { cam.id = j.id; fr.src = src(cam); }
+      }
+    }).catch(function () {});
   }
 
   /* ---------- homepage teaser band ---------- */
